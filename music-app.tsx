@@ -14,7 +14,7 @@ const INPUT_COLOR = new Vec4(0.1, 0.1, 0.1, 1);
 let tracks = await getLibraryTracks();
 
 // Lazy loaded textures ;)
-const textures = tracks.slice(0, 20).map(getTrackCover(m));
+const textures = tracks.slice(0, 20).map(getTrackCover);
 
 function main() {
   const layout = new Layout(600, 700);
