@@ -13,15 +13,8 @@ const INPUT_COLOR = new Vec4(0.1, 0.1, 0.1, 1);
 
 let tracks = await getLibraryTracks();
 
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 // Lazy loaded textures ;)
-const textures = tracks.slice(0, 20).map(async (m) => {
-  await sleep(10000 * Math.random());
-  return getTrackCover(m);
-});
+const textures = tracks.slice(0, 20).map(getTrackCover(m));
 
 function main() {
   const layout = new Layout(600, 700);
