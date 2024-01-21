@@ -1,0 +1,10 @@
+{
+  "imports": {
+    // "sdl2": "https://deno.land/x/sdl2@0.7.0/mod.ts"
+    "sdl2": "../deno_sdl2/mod.ts"
+  },
+  "tasks": {
+    "wasmbuild": "deno run -A https://deno.land/x/wasmbuild/main.ts --out ttf/",
+    "run": "../deno/target/release/deno run -A --unstable music-app.tsx"
+  }
+}

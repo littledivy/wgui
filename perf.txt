@@ -1,0 +1,17 @@
+on macOS M1:
+
+* constant CPU usage: 5%
+
+* time till first frame: 89ms
+  (startup time)
+
+17ms baseline Deno
++ font parsing, atlas lookup
++ wasm loading and "npm:sharp"
+
+* avg per frame time: 8ms
+
+I am rendering each glyph shape and writing into the texture
+this can probably go even down with some caching.
+
+Bonus: lazy loading of fonts and images for faster startup
