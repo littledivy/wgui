@@ -65,16 +65,25 @@ export class InnerApp {
   }
 
   async start(fn: (event: EventType) => void) {
+    // Process all events and reschedule frame
     const frame = () => {
-      const { value: event } = this.#window.events().next();
-      if (event.type === EventType.Quit) {
-        Deno.exit(0);
-      }
+      for (;;) {
+        const { value: event } = this.#window.events().next();
+        if (event.type === EventType.Quit) {
+          Deno.exit(0);
+        }
 
-      fn(event);
+        fn(event);
+
+        // Draw event indicates last event for this frame.
+        if (event.type == EventType.Draw) {
+          setTimeout(frame, 0);
+          break;
+        }
+      }
     };
 
-    setInterval(frame, 0);
+    frame();
   }
 
   render() {
@@ -177,9 +186,11 @@ export function Rect(props = {}) {
         event.y >= props.position.y &&
         event.y <= props.position.y + props.size.y
       ) {
-        mouseOver = true;
-        props.onMouseOver(props);
+        if (!mouseOver) {
+          props.onMouseOver(props);
+        }
 
+        mouseOver = true;
         if (!props.focused && event.type == EventType.MouseButtonDown) {
           props.onClick(props);
           props.focused = true;
@@ -732,7 +743,7 @@ async function loadFont() {
   });
 }
 
-loadFont();
+await loadFont();
 
 export function getTextShape(
   text: string,

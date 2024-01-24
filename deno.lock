@@ -354,6 +354,7 @@
     "https://deno.land/x/pngs@0.1.1/wasm.js": "e3d4a8f293b267c9859a2164ca7b4603869bc92fe0d5ad4f109925858bce0c4c",
     "https://deno.land/x/wasmbuild@0.15.4/cache.ts": "9d01b5cb24e7f2a942bbd8d14b093751fa690a6cde8e21709ddc97667e6669ed",
     "https://deno.land/x/wasmbuild@0.15.4/loader.ts": "8c2fc10e21678e42f84c5135d8ab6ab7dc92424c3f05d2354896a29ccfd02a63",
-    "https://raw.githubusercontent.com/NextFire/jxa/v0.0.4/run/mod.ts": "6706a04b14185f7d4a5020cb903599933c7455410439bc6bb448b0120cd5546f"
+    "https://raw.githubusercontent.com/NextFire/jxa/v0.0.4/run/mod.ts": "6706a04b14185f7d4a5020cb903599933c7455410439bc6bb448b0120cd5546f",
+    "https://raw.githubusercontent.com/littledivy/deno_sdl2/main/mod.ts": "574505d8d75b65b864edd22288c0b5f4a25e34c7d95f742d57493f3ad86f28f0"
   }
 }

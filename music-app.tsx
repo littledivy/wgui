@@ -11,7 +11,15 @@ const HIGHLIGHT_COLOR = new Vec4(0.3, 0.3, 0.3, 1);
 const CONTAINER_COLOR = new Vec4(0.2, 0.2, 0.2, 1);
 const INPUT_COLOR = new Vec4(0.1, 0.1, 0.1, 1);
 
-let tracks = await getLibraryTracks();
+const isMacOS = Deno.build.os == "macos";
+
+for (let i = 0; i < 10; i++) {
+  try {
+    await getLibraryTracks();
+  } catch (e) {}
+  console.log(i);
+}
+let tracks = isMacOS ? await getLibraryTracks() : [];
 
 // Lazy loaded textures ;)
 const textures = tracks.slice(0, 20).map(getTrackCover);
@@ -53,7 +61,9 @@ function main() {
         position={layout.center.subtract(new Vec2(250 - 25, 300 - 25))}
         borderRadius={25}
         color={INPUT_COLOR}
-        onMouseOver={(self) => self.color = HIGHLIGHT_COLOR}
+        onMouseOver={(self) => {
+          self.color = HIGHLIGHT_COLOR;
+        }}
         onMouseOut={(self) => self.color = INPUT_COLOR}
         onKeyDown={(self, event) => {
           if (event.keysym.scancode == 42) {
