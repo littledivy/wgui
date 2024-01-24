@@ -13,12 +13,6 @@ const INPUT_COLOR = new Vec4(0.1, 0.1, 0.1, 1);
 
 const isMacOS = Deno.build.os == "macos";
 
-for (let i = 0; i < 10; i++) {
-  try {
-    await getLibraryTracks();
-  } catch (e) {}
-  console.log(i);
-}
 let tracks = isMacOS ? await getLibraryTracks() : [];
 
 // Lazy loaded textures ;)
