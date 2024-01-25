@@ -4,6 +4,7 @@
   },
   "tasks": {
     "wasmbuild": "deno run -A https://deno.land/x/wasmbuild/main.ts --out ttf/",
-    "run": "deno run -A --env --unstable-ffi --unstable-webgpu music-app.tsx"
+    "run": "deno run -A --env --unstable-ffi --unstable-webgpu music-app.tsx",
+    "compile": "deno compile -A --no-check --env --unstable-ffi --unstable-webgpu music-app.tsx --standalone"
   }
 }

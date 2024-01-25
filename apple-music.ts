@@ -50,19 +50,21 @@ export async function playTrack({ id }: { id: number }) {
   }, id);
 }
 
-const cache = await caches.open("track-covers-v0");
+const isStandalone = Deno.args.includes("--standalone");
+
+const cache = !isStandalone ? await caches.open("track-covers-v0") : null;
 
 export async function getTrackCover({ name, artist, album }) {
   const query = `${name} ${artist} ${album}`.replace("*", "");
   const uri =
     `https://itunes.apple.com/search?term=${query}&entity=song&limit=2`;
 
-  let req = await cache.match(uri);
+  let req = await cache?.match(uri);
   if (!req) {
     req = await fetch(
       uri,
     );
-    await cache.put(uri, req.clone());
+    await cache?.put(uri, req.clone());
   }
 
   const json = await req.json();
@@ -78,10 +80,10 @@ export async function getTrackCover({ name, artist, album }) {
     "360x360bb.png",
   );
 
-  req = await cache.match(url);
+  req = await cache?.match(url);
   if (!req) {
     req = await fetch(url);
-    await cache.put(url, req.clone());
+    await cache?.put(url, req.clone());
   }
 
   const buffer = await req.arrayBuffer();

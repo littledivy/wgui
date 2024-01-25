@@ -1,6 +1,10 @@
 import { Client } from "npm:spotify-api.js";
 import open from "npm:open";
 
+// deno compile --env does not work.
+// https://github.com/denoland/deno/issues/22105
+import "https://deno.land/std@0.213.0/dotenv/load.ts";
+
 const clientID = Deno.env.get("SPOTIFY_CLIENT_ID");
 const clientSecret = Deno.env.get("SPOTIFY_CLIENT_SECRET");
 
@@ -18,8 +22,24 @@ const url =
 
 let client: Client;
 
+function setItem(k, v) {
+  try {
+    localStorage.setItem(k, v);
+  } catch {
+    // pass
+  }
+}
+
+function getItem(k) {
+  try {
+    return localStorage.getItem(k);
+  } catch {
+    return null;
+  }
+}
+
 export async function getSavedTracks() {
-  let refreshMeta = localStorage.getItem("refreshMeta");
+  let refreshMeta = getItem("refreshMeta");
   if (!refreshMeta) {
     await open(url);
 
@@ -52,7 +72,7 @@ export async function getSavedTracks() {
       refreshToken: true,
     });
 
-    localStorage.setItem("refreshMeta", JSON.stringify(client.refreshMeta));
+    setItem("refreshMeta", JSON.stringify(client.refreshMeta));
   } else {
     const { refreshToken } = JSON.parse(refreshMeta);
     client = await Client.create({
