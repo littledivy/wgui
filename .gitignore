@@ -2,6 +2,7 @@
 /dev
 /tools
 
+.env
 *.ttf
 *.otf
 *.woff

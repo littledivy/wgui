@@ -38,7 +38,7 @@ export async function getLibraryTracks() {
   });
 }
 
-export async function playTrack(trackId: number) {
+export async function playTrack({ id }: { id: number }) {
   return run((trackId: number) => {
     const music = Application("Music") as unknown as iTunes;
 
@@ -47,10 +47,10 @@ export async function playTrack(trackId: number) {
 
     const track = library.tracks().find((t) => t.id() === trackId);
     track.play();
-  }, trackId);
+  }, id);
 }
 
-const cache = await caches.open("track-covers-v0");
+const cache = await caches.open("track-covers-v0-2");
 
 export async function getTrackCover({ name, artist, album }) {
   const query = `${name} ${artist} ${album}`.replace("*", "");
@@ -66,6 +66,13 @@ export async function getTrackCover({ name, artist, album }) {
   }
 
   const json = await req.json();
+  if (!json.results[0]) {
+    return {
+      width: 360,
+      height: 360,
+      image: new Uint8Array(518400),
+    };
+  }
   const url = json.results[0].artworkUrl100.replace(
     "100x100bb.jpg",
     "360x360bb.png",

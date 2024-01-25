@@ -1,11 +1,14 @@
 /** @jsx h */
 import { App, Fragment, h, Layout, Rect, Text, Vec2, Vec4 } from "./wgui.ts";
 import {
-  getLibraryTracks,
-  getState,
+  getLibraryTracks as getAppleMusicSavedTracks,
   getTrackCover,
-  playTrack,
+  playTrack as playAppleMusicTrack,
 } from "./apple-music.ts";
+import {
+  getSavedTracks as getSpotifySavedTracks,
+  playTrack as playSpotifyTrack,
+} from "./spotify.ts";
 
 const HIGHLIGHT_COLOR = new Vec4(0.3, 0.3, 0.3, 1);
 const CONTAINER_COLOR = new Vec4(0.2, 0.2, 0.2, 1);
@@ -13,7 +16,12 @@ const INPUT_COLOR = new Vec4(0.1, 0.1, 0.1, 1);
 
 const isMacOS = Deno.build.os == "macos";
 
-let tracks = isMacOS ? await getLibraryTracks() : [];
+const getLibraryTracks = isMacOS
+  ? getAppleMusicSavedTracks
+  : getSpotifySavedTracks;
+const playTrack = isMacOS ? playAppleMusicTrack : playSpotifyTrack;
+
+let tracks = await getLibraryTracks();
 
 // Lazy loaded textures ;)
 const textures = tracks.slice(0, 20).map(getTrackCover);
@@ -94,7 +102,7 @@ function main() {
                   : INPUT_COLOR}
                 onClick={() => {
                   selectedTrack = m.id;
-                  playTrack(m.id);
+                  playTrack(m);
                 }}
               />
               <Text
