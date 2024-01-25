@@ -1,7 +1,7 @@
 import { run } from "https://raw.githubusercontent.com/NextFire/jxa/v0.0.4/run/mod.ts";
 import type { iTunes } from "https://raw.githubusercontent.com/NextFire/jxa/v0.0.4/run/types/core.d.ts";
 import { cache } from "https://deno.land/x/cache/mod.ts";
-import sharp from "npm:sharp";
+import jimp from "npm:jimp";
 
 const CLIENT_ID = "773825528921849856";
 const APP_NAME = "Music";
@@ -50,7 +50,7 @@ export async function playTrack({ id }: { id: number }) {
   }, id);
 }
 
-const cache = await caches.open("track-covers-v0-2");
+const cache = await caches.open("track-covers-v0");
 
 export async function getTrackCover({ name, artist, album }) {
   const query = `${name} ${artist} ${album}`.replace("*", "");
@@ -86,18 +86,15 @@ export async function getTrackCover({ name, artist, album }) {
 
   const buffer = await req.arrayBuffer();
 
-  // Convert RGB to RGBA
-  const i = await sharp(buffer)
-    .ensureAlpha()
+  const image = await jimp.read(buffer);
+  // Add alpha channel, resize and get raw bitmap
+  const raw = await image.opaque()
     .resize(360, 360)
-    .raw()
-    .toBuffer();
+    .bitmap.data;
 
-  const image = {
+  return {
     width: 360,
     height: 360,
-    image: new Uint8Array(i),
+    image: new Uint8Array(raw.buffer),
   };
-
-  return image;
 }
