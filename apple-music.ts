@@ -3,9 +3,6 @@ import type { iTunes } from "https://raw.githubusercontent.com/NextFire/jxa/v0.0
 import { cache } from "https://deno.land/x/cache/mod.ts";
 import jimp from "npm:jimp";
 
-const CLIENT_ID = "773825528921849856";
-const APP_NAME = "Music";
-
 export function getState() {
   return run(() => {
     const music = Application("Music") as unknown as iTunes;
@@ -18,7 +15,7 @@ export function getState() {
   });
 }
 
-export async function getLibraryTracks() {
+export function getLibraryTracks() {
   return run(() => {
     const music = Application("Music") as unknown as iTunes;
 
@@ -38,7 +35,7 @@ export async function getLibraryTracks() {
   });
 }
 
-export async function playTrack({ id }: { id: number }) {
+export function playTrack({ id }: { id: number }) {
   return run((trackId: number) => {
     const music = Application("Music") as unknown as iTunes;
 

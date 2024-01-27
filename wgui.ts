@@ -64,7 +64,7 @@ export class InnerApp {
     return app;
   }
 
-  async start(fn: (event: EventType) => void) {
+  start(fn: (event: EventType) => void) {
     // Process all events and reschedule frame
     const frame = () => {
       for (;;) {
@@ -92,6 +92,7 @@ export class InnerApp {
   }
 }
 
+// deno-lint-ignore no-explicit-any
 export function h(tag: string, props: any, ...children: any[]) {
   if (typeof tag === "string") {
     throw new Error(`Tag ${tag} is not supported`);
@@ -122,7 +123,6 @@ export async function App(
       for (const c of child) {
         renderChild(c, app, event);
       }
-    } else {
     }
   }
   app.start((event) => {
@@ -243,7 +243,7 @@ const RECTANGLE_BUFFER_SIZE = 16 * 1024;
 
 class RectRenderer {
   rectangleData: Float32Array = new Float32Array(RECTANGLE_BUFFER_SIZE);
-  rectangleCount: number = 0;
+  rectangleCount = 0;
 
   vertexBuffer: GPUBuffer;
   rectangleBuffer: GPUBuffer;
@@ -505,7 +505,7 @@ class RectRenderer {
     position: Vec2,
     size: Vec2,
     usage: number = NodeType.Rect,
-    borderRadius: number = 0,
+    borderRadius = 0,
     uv: Vec4 = new Vec4(0, 0, 1, 1),
   ) {
     const struct = 16;
@@ -534,13 +534,13 @@ class RectRenderer {
 
     let j = 0;
     for (let i = 0; i < shape.positions.length; i += 2) {
-      let shapePosition = new Vec2(
+      const shapePosition = new Vec2(
         shape.positions[i] + position.x,
         shape.positions[i + 1] + position.y,
       );
-      let size = new Vec2(shape.sizes[i], shape.sizes[i + 1]);
+      const size = new Vec2(shape.sizes[i], shape.sizes[i + 1]);
 
-      let uv = new Vec4(
+      const uv = new Vec4(
         shape.uvs[j],
         shape.uvs[j + 1],
         shape.uvs[j + 2],
@@ -560,7 +560,7 @@ function fileExistsDontCareAboutTOCTOUDontComeAfterMePls(path: string) {
   try {
     Deno.statSync(path);
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 }
@@ -695,18 +695,18 @@ async function loadFont() {
     });
 
     context.font = `96px ${fontName}`;
-    function renderAtlasCallback(
+    const renderAtlasCallback = (
       charcode,
       x,
       y,
-    ) {
+    ) => {
       context.fillStyle = "rgba(255, 255, 255, 1)";
       context.fillText(
         String.fromCharCode(charcode),
         x,
         y,
       );
-    }
+    };
 
     ttf2 = parse_ttf(buffer, renderAtlasCallback);
 
@@ -735,7 +735,6 @@ async function loadFont() {
 
     Deno.writeFileSync(fontAtlas, new Uint8Array(sdfImageData.data.buffer));
     Deno.writeFileSync("./Inter.png", new Uint8Array(canvas.toBuffer()));
-  } else {
   }
 
   Deno.readFile("./Inter.ttf").then((buffer) => {
@@ -753,7 +752,7 @@ export function getTextShape(
   const sizes = new Float32Array(text.length * 2);
   const uvs = new Float32Array(text.length * 4);
 
-  const shape = ttf2.get_text_shape(text, size, positions, sizes, uvs);
+  ttf2.get_text_shape(text, size, positions, sizes, uvs);
 
   return {
     positions,
@@ -799,10 +798,10 @@ export class Renderer {
     this.rectRenderer.text(text, position, fontSize, color);
   }
 
-  #fontAtlasFile: string = "./Inter.bin";
+  #fontAtlasFile = "./Inter.bin";
   async loadFont() {
     const start = performance.now();
-    let data = Deno.readFileSync(this.#fontAtlasFile);
+    const data = await Deno.readFile(this.#fontAtlasFile);
     const size = { width: 4096, height: 4096 };
     console.log(`Font atlas generation took ${performance.now() - start}ms`);
 

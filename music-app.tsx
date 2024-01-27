@@ -21,18 +21,17 @@ const getLibraryTracks = isMacOS
   : getSpotifySavedTracks;
 const playTrack = isMacOS ? playAppleMusicTrack : playSpotifyTrack;
 
-let tracks = await getLibraryTracks();
-
+const tracks = await getLibraryTracks();
 // Lazy loaded textures ;)
 const textures = tracks.slice(0, 20).map(getTrackCover);
 
 function main() {
   const layout = new Layout(600, 700);
   let text = "";
-  let clicked = false;
+  const clicked = false;
   let selectedTrack = -1;
   let topTrackIndex = 0;
-  let maxTracks = 4;
+  const maxTracks = 4;
 
   return (
     <App

@@ -39,7 +39,7 @@ function getItem(k) {
 }
 
 export async function getSavedTracks() {
-  let refreshMeta = getItem("refreshMeta");
+  const refreshMeta = getItem("refreshMeta");
   if (!refreshMeta) {
     await open(url);
 
