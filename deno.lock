@@ -944,6 +944,10 @@
   },
   "remote": {
     "https://deno.land/std@0.106.0/encoding/base64.ts": "eecae390f1f1d1cae6f6c6d732ede5276bf4b9cd29b1d281678c054dc5cc009e",
+    "https://deno.land/std@0.213.0/dotenv/load.ts": "587b342f0f6a3df071331fe6ba1c823729ab68f7d53805809475e486dd4161d7",
+    "https://deno.land/std@0.213.0/dotenv/mod.ts": "46cc7a78cf3f7ba533c8c9b90407a365f925be332ebdc867a1f502614e3d8523",
+    "https://deno.land/std@0.213.0/dotenv/parse.ts": "55d5d1a5ba76c1324e6dc2f2f7917f03c47e5da5c2c55af11fd0fe2d6a3d3a2e",
+    "https://deno.land/std@0.213.0/dotenv/stringify.ts": "0047ad7068289735d08964046aea267a750c141b494ca0e38831b89be6c020c2",
     "https://deno.land/std@0.97.0/_util/assert.ts": "2f868145a042a11d5ad0a3c748dcf580add8a0dbc0e876eaa0026303a5488f58",
     "https://deno.land/std@0.97.0/_util/os.ts": "e282950a0eaa96760c0cf11e7463e66babd15ec9157d4c9ed49cc0925686f6a7",
     "https://deno.land/std@0.97.0/encoding/base64.ts": "eecae390f1f1d1cae6f6c6d732ede5276bf4b9cd29b1d281678c054dc5cc009e",

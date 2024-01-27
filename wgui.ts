@@ -799,11 +799,9 @@ export class Renderer {
   }
 
   #fontAtlasFile = "./Inter.bin";
-  async loadFont() {
-    const start = performance.now();
-    const data = await Deno.readFile(this.#fontAtlasFile);
+  loadFont() {
+    const data = Deno.readFileSync(this.#fontAtlasFile);
     const size = { width: 4096, height: 4096 };
-    console.log(`Font atlas generation took ${performance.now() - start}ms`);
 
     const texture = this.device.createTexture({
       label: "image bitmap",
