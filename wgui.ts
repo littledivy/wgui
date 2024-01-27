@@ -260,7 +260,7 @@ class RectRenderer {
     this.width = width;
     this.height = height;
 
-    const rectWgsl = new URL(import.meta.resolve("./wgui.wgsl")).pathname;
+    const rectWgsl = new URL("wgui.wgsl", import.meta.url);
     const rectangleModule = device.createShaderModule({
       code: Deno.readTextFileSync(rectWgsl),
     });
