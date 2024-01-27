@@ -14,7 +14,7 @@ const HIGHLIGHT_COLOR = new Vec4(0.3, 0.3, 0.3, 1);
 const CONTAINER_COLOR = new Vec4(0.2, 0.2, 0.2, 1);
 const INPUT_COLOR = new Vec4(0.1, 0.1, 0.1, 1);
 
-const isMacOS = Deno.build.os == "macos";
+const isMacOS = Deno.build.os == "darwin";
 
 const getLibraryTracks = isMacOS
   ? getAppleMusicSavedTracks
