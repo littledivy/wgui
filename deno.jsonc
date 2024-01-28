@@ -1,6 +1,7 @@
 {
   "imports": {
-    "sdl2": "https://deno.land/x/sdl2@0.9.0/mod.ts"
+    "sdl2": "https://deno.land/x/sdl2@0.9.0/mod.ts",
+    "jxa": "https://raw.githubusercontent.com/littledivy/jxa/main/run/mod.ts"
   },
   "tasks": {
     "wasmbuild": "deno run -A https://deno.land/x/wasmbuild/main.ts --out ttf/",

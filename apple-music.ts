@@ -1,6 +1,5 @@
-import { run } from "https://raw.githubusercontent.com/NextFire/jxa/v0.0.4/run/mod.ts";
-import type { iTunes } from "https://raw.githubusercontent.com/NextFire/jxa/v0.0.4/run/types/core.d.ts";
-import { cache } from "https://deno.land/x/cache/mod.ts";
+import { run } from "jxa";
+import type { iTunes } from "jxa/types/core.d.ts";
 import jimp from "npm:jimp";
 
 export function getState() {

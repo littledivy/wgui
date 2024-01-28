@@ -1,6 +1,5 @@
 import { EventType, startTextInput, stopTextInput, WindowBuilder } from "sdl2";
 
-import { decode } from "https://deno.land/x/pngs/mod.ts";
 import { instantiate } from "./ttf/wgui_ttf.generated.js";
 
 export class InnerApp {
@@ -247,9 +246,6 @@ export function Rect(props = {}) {
   };
 }
 
-const defaultImage = Deno.readFileSync("./apple-music.png");
-const DEFAULT_TEXTURE = decode(defaultImage);
-
 enum NodeType {
   Glyph = -2,
   Rect = -1,
@@ -391,23 +387,15 @@ class RectRenderer {
       magFilter: "nearest",
       minFilter: "nearest",
     });
-    const source = DEFAULT_TEXTURE;
 
     // Image texture
     this.texture = device.createTexture({
       format: "rgba8unorm",
-      size: [source.width, source.height, 20],
+      size: [360, 360, 20],
       usage: GPUTextureUsage.TEXTURE_BINDING |
         GPUTextureUsage.COPY_DST |
         GPUTextureUsage.RENDER_ATTACHMENT,
     });
-
-    device.queue.writeTexture(
-      { texture: this.texture },
-      source.image,
-      { bytesPerRow: source.width * 4 },
-      [source.width, source.height, 1],
-    );
 
     this.imageCount = 0;
 
@@ -423,8 +411,9 @@ class RectRenderer {
         const currentImageCount = this.imageCount;
         texture.then((texture) => {
           this.setImage(texture, currentImageCount);
+          // Free up memory.
+          delete texture.image;
         });
-        this.setImage(DEFAULT_TEXTURE, this.imageCount);
       } else {
         this.setImage(texture, this.imageCount);
       }
@@ -448,8 +437,6 @@ class RectRenderer {
       },
       [source.width, source.height],
     );
-
-    source = undefined;
   }
 
   setFont(texture: GPUTexture) {
