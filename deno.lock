@@ -2,6 +2,7 @@
   "version": "3",
   "packages": {
     "specifiers": {
+      "npm:dotenv-cli": "npm:dotenv-cli@7.3.0",
       "npm:jimp": "npm:jimp@0.22.10_@jimp+custom@0.22.10",
       "npm:open": "npm:open@10.0.3",
       "npm:sharp": "npm:sharp@0.32.6",
@@ -373,6 +374,14 @@
           "delayed-stream": "delayed-stream@1.0.0"
         }
       },
+      "cross-spawn@7.0.3": {
+        "integrity": "sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==",
+        "dependencies": {
+          "path-key": "path-key@3.1.1",
+          "shebang-command": "shebang-command@2.0.0",
+          "which": "which@2.0.2"
+        }
+      },
       "decompress-response@6.0.0": {
         "integrity": "sha512-aW35yZM6Bb/4oJlZncMH2LCoZtJXTRxES17vE3hoRiowU2kWHaJKFkSBDnDR+cm9J+9QhXmREyIfv0pji9ejCQ==",
         "dependencies": {
@@ -408,6 +417,23 @@
       },
       "dom-walk@0.1.2": {
         "integrity": "sha512-6QvTW9mrGeIegrFXdtQi9pk7O/nSK6lSdXW2eqUspN5LWD7UTji2Fqw5V2YLjBpHEoU9Xl/eUWNpDeZvoyOv2w==",
+        "dependencies": {}
+      },
+      "dotenv-cli@7.3.0": {
+        "integrity": "sha512-314CA4TyK34YEJ6ntBf80eUY+t1XaFLyem1k9P0sX1gn30qThZ5qZr/ZwE318gEnzyYP9yj9HJk6SqwE0upkfw==",
+        "dependencies": {
+          "cross-spawn": "cross-spawn@7.0.3",
+          "dotenv": "dotenv@16.4.1",
+          "dotenv-expand": "dotenv-expand@10.0.0",
+          "minimist": "minimist@1.2.8"
+        }
+      },
+      "dotenv-expand@10.0.0": {
+        "integrity": "sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==",
+        "dependencies": {}
+      },
+      "dotenv@16.4.1": {
+        "integrity": "sha512-CjA3y+Dr3FyFDOAMnxZEGtnW9KBR2M0JvvUtXNW+dYJL5ROWxP9DUHCwgFqpMk0OXCc0ljhaNTr2w/kutYIcHQ==",
         "dependencies": {}
       },
       "end-of-stream@1.4.4": {
@@ -511,6 +537,10 @@
         "dependencies": {
           "is-inside-container": "is-inside-container@1.0.0"
         }
+      },
+      "isexe@2.0.0": {
+        "integrity": "sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==",
+        "dependencies": {}
       },
       "isomorphic-fetch@3.0.0": {
         "integrity": "sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA==",
@@ -645,6 +675,10 @@
         "integrity": "sha512-ft3iAoLOB/MlwbNXgzy43SWGP6sQki2jQvAyBg/zDFAgr9bfNWZIUj42Kw2eJIl8kEi4PbgE6U1Zau/HwI75HA==",
         "dependencies": {}
       },
+      "path-key@3.1.1": {
+        "integrity": "sha512-ojmeN0qd+y0jszEtoY48r0Peq5dwMEkIlCOu6Q5f41lfkswXuKtYrhgoTpLnyIcHm24Uhqx+5Tqm2InSwLhE6Q==",
+        "dependencies": {}
+      },
       "peek-readable@4.1.0": {
         "integrity": "sha512-ZI3LnwUv5nOGbQzD9c2iDG6toheuXSZP5esSHBjopsXH4dg19soufvpUGA3uohi5anFtGb2lhAVdHzH6R/Evvg==",
         "dependencies": {}
@@ -760,6 +794,16 @@
           "tar-fs": "tar-fs@3.0.4",
           "tunnel-agent": "tunnel-agent@0.6.0"
         }
+      },
+      "shebang-command@2.0.0": {
+        "integrity": "sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==",
+        "dependencies": {
+          "shebang-regex": "shebang-regex@3.0.0"
+        }
+      },
+      "shebang-regex@3.0.0": {
+        "integrity": "sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==",
+        "dependencies": {}
       },
       "simple-concat@1.0.1": {
         "integrity": "sha512-cSFtAPtRhljv69IK0hTVZQ+OfE9nePi/rtJmw5UjHeVyVroEqJXP1sFztKUy1qU+xvz3u/sfYJLa947b7nAN2Q==",
@@ -899,6 +943,12 @@
           "webidl-conversions": "webidl-conversions@3.0.1"
         }
       },
+      "which@2.0.2": {
+        "integrity": "sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==",
+        "dependencies": {
+          "isexe": "isexe@2.0.0"
+        }
+      },
       "wrappy@1.0.2": {
         "integrity": "sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==",
         "dependencies": {}
@@ -992,6 +1042,8 @@
     "https://deno.land/x/sdl2@0.8.0/mod.ts": "068d419e09e597c475f8e2ab4a4c75abd85edf9c04f35b6cb9dcd456d2337549",
     "https://deno.land/x/wasmbuild@0.15.4/cache.ts": "9d01b5cb24e7f2a942bbd8d14b093751fa690a6cde8e21709ddc97667e6669ed",
     "https://deno.land/x/wasmbuild@0.15.4/loader.ts": "8c2fc10e21678e42f84c5135d8ab6ab7dc92424c3f05d2354896a29ccfd02a63",
+    "https://deno.land/x/wasmbuild@0.15.6/loader/cache.ts": "362d03a2ceb3d3e130373102a5de6d54ffda659a0911c2fcc090c29c3555f7ef",
+    "https://deno.land/x/wasmbuild@0.15.6/loader/fetch.ts": "7d015203a93cbadd05034cbb6e726d35f47e1f51140d91e69aeddc5d71b06ec8",
     "https://raw.githubusercontent.com/NextFire/jxa/v0.0.4/run/mod.ts": "6706a04b14185f7d4a5020cb903599933c7455410439bc6bb448b0120cd5546f",
     "https://raw.githubusercontent.com/littledivy/deno_sdl2/main/mod.ts": "574505d8d75b65b864edd22288c0b5f4a25e34c7d95f742d57493f3ad86f28f0"
   }

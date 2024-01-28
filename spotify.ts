@@ -12,7 +12,9 @@ const scopes = [
   "user-read-private",
   "user-library-read",
   "playlist-read-private",
-  "user-modify-playback-state",
+  // "user-read-currently-playing",
+  "user-read-playback-state",
+  "user-modify-playback-state"
 ];
 
 const url =
@@ -24,7 +26,7 @@ let client: Client;
 
 function setItem(k, v) {
   try {
-    localStorage.setItem(k, v);
+    // localStorage.setItem(k, v);
   } catch {
     // pass
   }
@@ -32,7 +34,7 @@ function setItem(k, v) {
 
 function getItem(k) {
   try {
-    return localStorage.getItem(k);
+    // return localStorage.getItem(k);
   } catch {
     return null;
   }
@@ -40,6 +42,7 @@ function getItem(k) {
 
 export async function getSavedTracks() {
   const refreshMeta = getItem("refreshMeta");
+  console.log("refreshMeta", refreshMeta);
   if (!refreshMeta) {
     await open(url);
 
@@ -86,6 +89,9 @@ export async function getSavedTracks() {
   }
 
   const tracks = await client.user.getSavedTracks();
+  console.log({
+    tracks,
+  })
   return tracks.map((m, i) => {
     return {
       name: m.item.name,
@@ -98,10 +104,32 @@ export async function getSavedTracks() {
   });
 }
 
+export interface AvailableDevicesResponse {
+  devices: Device[]
+}
+
+export interface Device {
+  id: string
+  is_active: boolean
+  is_private_session: boolean
+  is_restricted: boolean
+  name: string
+  type: string
+  volume_percent: number
+  supports_volume: boolean
+}
+
+export async function getAvailableDevices(): Promise<AvailableDevicesResponse> {
+  return await client!.fetch(`/me/player/devices`);
+}
+
 export async function playTrack({ uri }: { uri: string }) {
-  await client!.fetch(`/me/player/play`, {
+  const { devices = [] } = await getAvailableDevices();
+
+  let x = await client!.fetch(`/me/player/play?device_id=${devices?.[0]?.id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: { uris: [uri], position_ms: 0 },
   });
+  console.log(x);
 }

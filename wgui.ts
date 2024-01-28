@@ -110,7 +110,7 @@ export function h(tag: string, props: any, ...children: any[]) {
 }
 
 export async function App(
-  { width = 800, height = 600, children, textures = [] },
+  { width = 800, height = 600, children, textures = [] }: { width?: number; height?: number; children?: any[]; textures?: any[] },
 ) {
   const app = await InnerApp.initialize(width, height, textures);
   function renderChild(child, app, event) {

@@ -9,3 +9,4 @@
 Inter.png
 *.bin
 /music-app
+!Inter.ttf
