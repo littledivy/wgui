@@ -86,7 +86,7 @@ export async function getSavedTracks() {
   }
 
   const tracks = await client.user.getSavedTracks();
-  return tracks.map((m, i) => {
+  return tracks.slice(0, 10).map((m, i) => {
     return {
       name: m.item.name,
       artist: m.item.artists.map((a) => a.name).join(" & "),

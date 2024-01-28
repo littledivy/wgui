@@ -2,13 +2,14 @@ import { EventType, startTextInput, stopTextInput, WindowBuilder } from "sdl2";
 
 import { decode } from "https://deno.land/x/pngs/mod.ts";
 import { instantiate } from "./ttf/wgui_ttf.generated.js";
-import { createCanvas } from "https://deno.land/x/canvas/mod.ts";
 
 export class InnerApp {
   #surface;
   #adapter;
   #window;
   renderer;
+
+  #tasks = 0;
 
   constructor(window, surface, adapter, renderer) {
     this.#window = window;
@@ -55,28 +56,43 @@ export class InnerApp {
       device,
       context,
       colorTextureView,
-      textures,
     );
 
     renderer.loadFont();
 
     const app = new InnerApp(window, surface, context, renderer);
+    const texturesTask = textures.map((texture) => {
+      return app.addTask(texture);
+    });
+    renderer.setTextures(texturesTask);
     return app;
   }
 
-  start(fn: (event: EventType) => void) {
+  addTask(promise) {
+    this.#tasks++;
+    return promise.then((p) => {
+      this.#tasks--;
+      return p;
+    });
+  }
+
+  async start(fn: (event: EventType) => void) {
     // Process all events and reschedule frame
-    const frame = () => {
+    const frame = async () => {
       for (;;) {
-        const { value: event } = this.#window.events().next();
+        const { value: event } = await this.#window.events(this.#tasks == 0)
+          .next();
         if (event.type === EventType.Quit) {
           Deno.exit(0);
         }
 
         fn(event);
 
-        // Draw event indicates last event for this frame.
-        if (event.type == EventType.Draw) {
+        // No pending tasks. Give CPU back to OS.
+        if (this.#tasks == 0) {
+          fn({ type: EventType.Draw });
+        } else {
+          // There are pending tasks. Run microtasks and reschedule frame.
           setTimeout(frame, 0);
           break;
         }
@@ -226,8 +242,6 @@ export function Rect(props = {}) {
   };
 }
 
-const devicePixelRatio = 1;
-
 const defaultImage = Deno.readFileSync("./apple-music.png");
 const DEFAULT_TEXTURE = decode(defaultImage);
 
@@ -255,7 +269,6 @@ class RectRenderer {
     height: number,
     private device: GPUDevice,
     private readonly context: GPUCanvasContext,
-    textures,
   ) {
     this.width = width;
     this.height = height;
@@ -393,6 +406,13 @@ class RectRenderer {
 
     this.imageCount = 0;
 
+    // Just regular full-screen quad consisting of two triangles.
+    const vertices = [0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1];
+
+    device.queue.writeBuffer(this.vertexBuffer, 0, new Float32Array(vertices));
+  }
+
+  setTextures(textures) {
     for (const texture of textures) {
       if (texture instanceof Promise) {
         const currentImageCount = this.imageCount;
@@ -405,11 +425,6 @@ class RectRenderer {
       }
       this.imageCount += 1;
     }
-
-    // Just regular full-screen quad consisting of two triangles.
-    const vertices = [0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1];
-
-    device.queue.writeBuffer(this.vertexBuffer, 0, new Float32Array(vertices));
   }
 
   setImage(
@@ -428,6 +443,8 @@ class RectRenderer {
       },
       [source.width, source.height],
     );
+
+    source = undefined;
   }
 
   setFont(texture: GPUTexture) {
@@ -484,8 +501,8 @@ class RectRenderer {
     renderPass.setViewport(
       0,
       0,
-      this.width * devicePixelRatio,
-      this.height * devicePixelRatio,
+      this.width,
+      this.height,
       0,
       1,
     );
@@ -497,7 +514,6 @@ class RectRenderer {
     renderPass.end();
 
     this.rectangleCount = 0;
-    this.rectangleData = new Float32Array(RECTANGLE_BUFFER_SIZE);
   }
 
   addRect(
@@ -682,6 +698,8 @@ async function loadFont() {
   const { parse_ttf } = await instantiate();
   const fontAtlas = "./Inter.bin";
   if (!fileExistsDontCareAboutTOCTOUDontComeAfterMePls(fontAtlas)) {
+    const { createCanvas } = await import("https://deno.land/x/canvas/mod.ts");
+
     const canvas = createCanvas(4096, 4096);
     const context = canvas.getContext("2d");
 
@@ -772,15 +790,17 @@ export class Renderer {
     private device: GPUDevice,
     private readonly context: GPUCanvasContext,
     private colorTextureView: GPUTextureView,
-    textures,
   ) {
     this.rectRenderer = new RectRenderer(
       width,
       height,
       device,
       context,
-      textures,
     );
+  }
+
+  setTextures(textures) {
+    this.rectRenderer.setTextures(textures);
   }
 
   rectangle(
