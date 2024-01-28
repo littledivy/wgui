@@ -5,11 +5,6 @@
   "tasks": {
     "wasmbuild": "deno run -A https://deno.land/x/wasmbuild/main.ts --out ttf/",
     "run": "deno run -A --env --unstable-ffi --unstable-webgpu music-app.tsx",
-    "compile": "deno compile -A --no-check --env --unstable-ffi --unstable-webgpu music-app.tsx --standalone",
-    
-    // Run `deno task compile` first to generate the standalone executable.
-    // We use `npm:dotenv-cli` to load the environment variables from `.env`,
-    // as deno compiled executables don't support `--env` flag.
-    "run:standalone": "deno run -A npm:dotenv-cli ./music-app"
+    "compile": "deno compile -A --no-check --env --unstable-ffi --unstable-webgpu music-app.tsx --standalone"
   }
 }

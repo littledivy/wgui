@@ -10,8 +10,6 @@ import {
   playTrack as playSpotifyTrack,
 } from "./spotify.ts";
 
-import "https://deno.land/std@0.213.0/dotenv/load.ts";
-
 const musicService = Deno.env.get("MUSIC_SERVICE") || "spotify";
 
 const HIGHLIGHT_COLOR = new Vec4(0.3, 0.3, 0.3, 1);

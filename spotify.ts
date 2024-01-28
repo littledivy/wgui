@@ -12,7 +12,6 @@ const scopes = [
   "user-read-private",
   "user-library-read",
   "playlist-read-private",
-  // "user-read-currently-playing",
   "user-read-playback-state",
   "user-modify-playback-state"
 ];
@@ -26,7 +25,7 @@ let client: Client;
 
 function setItem(k, v) {
   try {
-    // localStorage.setItem(k, v);
+    localStorage.setItem(k, v);
   } catch {
     // pass
   }
@@ -34,7 +33,7 @@ function setItem(k, v) {
 
 function getItem(k) {
   try {
-    // return localStorage.getItem(k);
+    return localStorage.getItem(k);
   } catch {
     return null;
   }
@@ -42,7 +41,6 @@ function getItem(k) {
 
 export async function getSavedTracks() {
   const refreshMeta = getItem("refreshMeta");
-  console.log("refreshMeta", refreshMeta);
   if (!refreshMeta) {
     await open(url);
 
@@ -89,9 +87,6 @@ export async function getSavedTracks() {
   }
 
   const tracks = await client.user.getSavedTracks();
-  console.log({
-    tracks,
-  })
   return tracks.map((m, i) => {
     return {
       name: m.item.name,
@@ -126,10 +121,13 @@ export async function getAvailableDevices(): Promise<AvailableDevicesResponse> {
 export async function playTrack({ uri }: { uri: string }) {
   const { devices = [] } = await getAvailableDevices();
 
-  let x = await client!.fetch(`/me/player/play?device_id=${devices?.[0]?.id}`, {
+  if (devices.length <= 0) {
+    console.error("No active device found");
+  }
+
+  await client!.fetch(`/me/player/play?device_id=${devices?.[0]?.id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: { uris: [uri], position_ms: 0 },
   });
-  console.log(x);
 }
