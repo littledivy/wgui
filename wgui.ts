@@ -831,8 +831,6 @@ export class Renderer {
       size,
     );
 
-    delete data;
-
     this.rectRenderer.setFont(texture);
   }
 
