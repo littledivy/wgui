@@ -13,7 +13,7 @@ const scopes = [
   "user-library-read",
   "playlist-read-private",
   "user-read-playback-state",
-  "user-modify-playback-state"
+  "user-modify-playback-state",
 ];
 
 const url =
@@ -100,18 +100,18 @@ export async function getSavedTracks() {
 }
 
 export interface AvailableDevicesResponse {
-  devices: Device[]
+  devices: Device[];
 }
 
 export interface Device {
-  id: string
-  is_active: boolean
-  is_private_session: boolean
-  is_restricted: boolean
-  name: string
-  type: string
-  volume_percent: number
-  supports_volume: boolean
+  id: string;
+  is_active: boolean;
+  is_private_session: boolean;
+  is_restricted: boolean;
+  name: string;
+  type: string;
+  volume_percent: number;
+  supports_volume: boolean;
 }
 
 export async function getAvailableDevices(): Promise<AvailableDevicesResponse> {

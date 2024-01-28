@@ -19,7 +19,9 @@ const INPUT_COLOR = new Vec4(0.1, 0.1, 0.1, 1);
 const isMacOS = Deno.build.os == "darwin";
 const useAppleMusic = isMacOS && musicService?.toLowerCase() != "spotify";
 
-const getLibraryTracks = useAppleMusic ? getAppleMusicSavedTracks : getSpotifySavedTracks;
+const getLibraryTracks = useAppleMusic
+  ? getAppleMusicSavedTracks
+  : getSpotifySavedTracks;
 const playTrack = useAppleMusic ? playAppleMusicTrack : playSpotifyTrack;
 
 const tracks = await getLibraryTracks();
