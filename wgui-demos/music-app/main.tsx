@@ -1,5 +1,5 @@
 /** @jsx h */
-import { App, Fragment, h, Layout, Rect, Text, Vec2, Vec4 } from "./wgui.ts";
+import { App, Fragment, h, Layout, Rect, Text, Vec2, Vec4 } from "wgui";
 import {
   getLibraryTracks as getAppleMusicSavedTracks,
   getTrackCover,

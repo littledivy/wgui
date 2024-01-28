@@ -1,6 +1,6 @@
 import { EventType, startTextInput, stopTextInput, WindowBuilder } from "sdl2";
 
-import { instantiate } from "./ttf/wgui_ttf.generated.js";
+import { instantiate } from "./wgui-ttf/wgui_ttf.generated.js";
 
 export class InnerApp {
   #surface;
