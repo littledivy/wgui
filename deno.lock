@@ -2,7 +2,6 @@
   "version": "3",
   "packages": {
     "specifiers": {
-      "npm:dotenv-cli": "npm:dotenv-cli@7.3.0",
       "npm:jimp": "npm:jimp@0.22.10_@jimp+custom@0.22.10",
       "npm:open": "npm:open@10.0.3",
       "npm:sharp": "npm:sharp@0.32.6",
@@ -374,14 +373,6 @@
           "delayed-stream": "delayed-stream@1.0.0"
         }
       },
-      "cross-spawn@7.0.3": {
-        "integrity": "sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==",
-        "dependencies": {
-          "path-key": "path-key@3.1.1",
-          "shebang-command": "shebang-command@2.0.0",
-          "which": "which@2.0.2"
-        }
-      },
       "decompress-response@6.0.0": {
         "integrity": "sha512-aW35yZM6Bb/4oJlZncMH2LCoZtJXTRxES17vE3hoRiowU2kWHaJKFkSBDnDR+cm9J+9QhXmREyIfv0pji9ejCQ==",
         "dependencies": {
@@ -417,23 +408,6 @@
       },
       "dom-walk@0.1.2": {
         "integrity": "sha512-6QvTW9mrGeIegrFXdtQi9pk7O/nSK6lSdXW2eqUspN5LWD7UTji2Fqw5V2YLjBpHEoU9Xl/eUWNpDeZvoyOv2w==",
-        "dependencies": {}
-      },
-      "dotenv-cli@7.3.0": {
-        "integrity": "sha512-314CA4TyK34YEJ6ntBf80eUY+t1XaFLyem1k9P0sX1gn30qThZ5qZr/ZwE318gEnzyYP9yj9HJk6SqwE0upkfw==",
-        "dependencies": {
-          "cross-spawn": "cross-spawn@7.0.3",
-          "dotenv": "dotenv@16.4.1",
-          "dotenv-expand": "dotenv-expand@10.0.0",
-          "minimist": "minimist@1.2.8"
-        }
-      },
-      "dotenv-expand@10.0.0": {
-        "integrity": "sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==",
-        "dependencies": {}
-      },
-      "dotenv@16.4.1": {
-        "integrity": "sha512-CjA3y+Dr3FyFDOAMnxZEGtnW9KBR2M0JvvUtXNW+dYJL5ROWxP9DUHCwgFqpMk0OXCc0ljhaNTr2w/kutYIcHQ==",
         "dependencies": {}
       },
       "end-of-stream@1.4.4": {
@@ -537,10 +511,6 @@
         "dependencies": {
           "is-inside-container": "is-inside-container@1.0.0"
         }
-      },
-      "isexe@2.0.0": {
-        "integrity": "sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==",
-        "dependencies": {}
       },
       "isomorphic-fetch@3.0.0": {
         "integrity": "sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA==",
@@ -675,10 +645,6 @@
         "integrity": "sha512-ft3iAoLOB/MlwbNXgzy43SWGP6sQki2jQvAyBg/zDFAgr9bfNWZIUj42Kw2eJIl8kEi4PbgE6U1Zau/HwI75HA==",
         "dependencies": {}
       },
-      "path-key@3.1.1": {
-        "integrity": "sha512-ojmeN0qd+y0jszEtoY48r0Peq5dwMEkIlCOu6Q5f41lfkswXuKtYrhgoTpLnyIcHm24Uhqx+5Tqm2InSwLhE6Q==",
-        "dependencies": {}
-      },
       "peek-readable@4.1.0": {
         "integrity": "sha512-ZI3LnwUv5nOGbQzD9c2iDG6toheuXSZP5esSHBjopsXH4dg19soufvpUGA3uohi5anFtGb2lhAVdHzH6R/Evvg==",
         "dependencies": {}
@@ -794,16 +760,6 @@
           "tar-fs": "tar-fs@3.0.4",
           "tunnel-agent": "tunnel-agent@0.6.0"
         }
-      },
-      "shebang-command@2.0.0": {
-        "integrity": "sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==",
-        "dependencies": {
-          "shebang-regex": "shebang-regex@3.0.0"
-        }
-      },
-      "shebang-regex@3.0.0": {
-        "integrity": "sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==",
-        "dependencies": {}
       },
       "simple-concat@1.0.1": {
         "integrity": "sha512-cSFtAPtRhljv69IK0hTVZQ+OfE9nePi/rtJmw5UjHeVyVroEqJXP1sFztKUy1qU+xvz3u/sfYJLa947b7nAN2Q==",
@@ -941,12 +897,6 @@
         "dependencies": {
           "tr46": "tr46@0.0.3",
           "webidl-conversions": "webidl-conversions@3.0.1"
-        }
-      },
-      "which@2.0.2": {
-        "integrity": "sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==",
-        "dependencies": {
-          "isexe": "isexe@2.0.0"
         }
       },
       "wrappy@1.0.2": {
