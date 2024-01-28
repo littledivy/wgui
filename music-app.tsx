@@ -10,16 +10,17 @@ import {
   playTrack as playSpotifyTrack,
 } from "./spotify.ts";
 
+const musicService = Deno.env.get("MUSIC_SERVICE") || "spotify";
+
 const HIGHLIGHT_COLOR = new Vec4(0.3, 0.3, 0.3, 1);
 const CONTAINER_COLOR = new Vec4(0.2, 0.2, 0.2, 1);
 const INPUT_COLOR = new Vec4(0.1, 0.1, 0.1, 1);
 
 const isMacOS = Deno.build.os == "darwin";
+const useAppleMusic = isMacOS && musicService?.toLowerCase() != "spotify";
 
-const getLibraryTracks = isMacOS
-  ? getAppleMusicSavedTracks
-  : getSpotifySavedTracks;
-const playTrack = isMacOS ? playAppleMusicTrack : playSpotifyTrack;
+const getLibraryTracks = useAppleMusic ? getAppleMusicSavedTracks : getSpotifySavedTracks;
+const playTrack = useAppleMusic ? playAppleMusicTrack : playSpotifyTrack;
 
 const tracks = await getLibraryTracks();
 // Lazy loaded textures ;)
