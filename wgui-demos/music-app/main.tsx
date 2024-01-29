@@ -1,5 +1,16 @@
 /** @jsx h */
-import { App, Fragment, h, Layout, Rect, Text, Vec2, Vec4 } from "wgui";
+import {
+  App,
+  Fragment,
+  h,
+  Layout,
+  Rect,
+  render,
+  Text,
+  useState,
+  Vec2,
+  Vec4,
+} from "wgui";
 import {
   getLibraryTracks as getAppleMusicSavedTracks,
   getTrackCover,
@@ -28,12 +39,12 @@ const tracks = await getLibraryTracks();
 // Lazy loaded textures ;)
 const textures = tracks.slice(0, 20).map(getTrackCover);
 
+const layout = new Layout(600, 700);
 function main() {
-  const layout = new Layout(600, 700);
-  let text = "";
-  const clicked = false;
-  let selectedTrack = -1;
-  let topTrackIndex = 0;
+  const [search, setSearch] = useState<string>("");
+  let [topTrackIndex, setTopTrackIndex] = useState<number>(0);
+  const [selectedTrack, setSelectedTrack] = useState<number>(-1);
+
   const maxTracks = 4;
 
   return (
@@ -51,10 +62,11 @@ function main() {
           topTrackIndex = Math.max(0, topTrackIndex);
           topTrackIndex = Math.min(
             tracks.filter((m) =>
-              m.name.toLowerCase().includes(text.toLowerCase())
+              m.name.toLowerCase().includes(search.toLowerCase())
             ).length - maxTracks,
             topTrackIndex,
           );
+          setTopTrackIndex(topTrackIndex);
         }}
         borderRadius={25}
         color={CONTAINER_COLOR}
@@ -71,11 +83,11 @@ function main() {
         onMouseOut={(self) => self.color = INPUT_COLOR}
         onKeyDown={(self, event) => {
           if (event.keysym.scancode == 42) {
-            text = text.slice(0, -1);
+            setSearch(search.slice(0, -1));
           }
         }}
         onInput={(self, event) => {
-          text += event.text;
+          setSearch(search + event.text);
         }}
       />
       <Text
@@ -85,87 +97,86 @@ function main() {
         color={new Vec4(1, 1, 1, 1)}
         fontSize={18}
       >
-        {() => text || "Search"}
+        {search || "Search"}
       </Text>
 
-      {() =>
-        tracks.filter((m) => m.name.toLowerCase().includes(text.toLowerCase()))
-          .slice(topTrackIndex, topTrackIndex + maxTracks).map((m, i) => (
-            <Fragment>
-              <Rect
-                size={new Vec2(500 - 50, 100)}
-                position={layout.center.subtract(new Vec2(250 - 25, 300 - 25))
-                  .add(
-                    new Vec2(0, 50 + 100 * i + 25 * (i + 1)),
-                  )}
-                borderRadius={25}
-                color={selectedTrack == m.id
-                  ? new Vec4(0.2, 0.2, 0.3, 1)
-                  : INPUT_COLOR}
-                onClick={() => {
-                  selectedTrack = m.id;
-                  playTrack(m);
-                }}
-              />
-              <Text
-                position={layout.center.subtract(new Vec2(250 - 25, 300 - 25))
-                  .add(
-                    new Vec2(15, 50 + 100 * i + 25 * (i + 1) + 20),
-                  )}
-                color={new Vec4(1, 1, 1, 1)}
-                fontSize={18}
-              >
-                {() => m.name}
-              </Text>
-
-              <Text
-                position={layout.center.subtract(new Vec2(250 - 25, 300 - 25))
-                  .add(
-                    new Vec2(15, 50 + 100 * i + 25 * (i + 1) + 20 + 20),
-                  )}
-                color={new Vec4(0.5, 0.5, 0.5, 1)}
-                fontSize={16}
-              >
-                {() => m.artist}
-              </Text>
-
-              {/* If the track is selected, show the text "Now playing" bottom left */}
-              {selectedTrack == m.id &&
-                (
-                  <Text
-                    position={layout.center.subtract(
-                      new Vec2(250 - 25, 300 - 25),
-                    )
-                      .add(
-                        new Vec2(
-                          15,
-                          50 + 100 * i + 25 * (i + 1) + 20 + 20 + 20,
-                        ),
-                      )}
-                    color={new Vec4(0.5, 0.5, 0.5, 1)}
-                    fontSize={12}
-                  >
-                    {() => "Now playing"}
-                  </Text>
+      {tracks.filter((m) => m.name.toLowerCase().includes(search.toLowerCase()))
+        .slice(topTrackIndex, topTrackIndex + maxTracks).map((m, i) => (
+          <Fragment>
+            <Rect
+              size={new Vec2(500 - 50, 100)}
+              position={layout.center.subtract(new Vec2(250 - 25, 300 - 25))
+                .add(
+                  new Vec2(0, 50 + 100 * i + 25 * (i + 1)),
                 )}
+              borderRadius={25}
+              color={selectedTrack == m.id
+                ? new Vec4(0.2, 0.2, 0.3, 1)
+                : INPUT_COLOR}
+              onClick={() => {
+                setSelectedTrack(m.id);
+                playTrack(m);
+              }}
+            />
+            <Text
+              position={layout.center.subtract(new Vec2(250 - 25, 300 - 25))
+                .add(
+                  new Vec2(15, 50 + 100 * i + 25 * (i + 1) + 20),
+                )}
+              color={new Vec4(1, 1, 1, 1)}
+              fontSize={18}
+            >
+              {m.name}
+            </Text>
 
-              {/* Album art inside the rect, aligned right */}
-              <Rect
-                size={new Vec2(100, 100)}
-                position={layout.center.subtract(new Vec2(250 - 25, 300 - 25))
-                  .add(
-                    new Vec2(500 - 50 - 100, 50 + 100 * i + 25 * (i + 1)),
-                  )}
-                usage={m.index}
-                borderRadius={25}
-                onMouseOver={(self) => self.borderRadius = 0}
-                onMouseOut={(self) => self.borderRadius = 25}
-              >
-              </Rect>
-            </Fragment>
-          ))}
+            <Text
+              position={layout.center.subtract(new Vec2(250 - 25, 300 - 25))
+                .add(
+                  new Vec2(15, 50 + 100 * i + 25 * (i + 1) + 20 + 20),
+                )}
+              color={new Vec4(0.5, 0.5, 0.5, 1)}
+              fontSize={16}
+            >
+              {m.artist}
+            </Text>
+
+            {/* If the track is selected, show the text "Now playing" bottom left */}
+            {selectedTrack == m.id &&
+              (
+                <Text
+                  position={layout.center.subtract(
+                    new Vec2(250 - 25, 300 - 25),
+                  )
+                    .add(
+                      new Vec2(
+                        15,
+                        50 + 100 * i + 25 * (i + 1) + 20 + 20 + 20,
+                      ),
+                    )}
+                  color={new Vec4(0.5, 0.5, 0.5, 1)}
+                  fontSize={12}
+                >
+                  {"Now playing"}
+                </Text>
+              )}
+
+            {/* Album art inside the rect, aligned right */}
+            <Rect
+              size={new Vec2(100, 100)}
+              position={layout.center.subtract(new Vec2(250 - 25, 300 - 25))
+                .add(
+                  new Vec2(500 - 50 - 100, 50 + 100 * i + 25 * (i + 1)),
+                )}
+              usage={m.index}
+              borderRadius={25}
+              onMouseOver={(self) => self.borderRadius = 0}
+              onMouseOut={(self) => self.borderRadius = 25}
+            >
+            </Rect>
+          </Fragment>
+        ))}
     </App>
   );
 }
 
-main();
+render(main);

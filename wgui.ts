@@ -124,14 +124,10 @@ export function h(tag: string, props: any, ...children: any[]) {
   return tag();
 }
 
-export async function App(
-  { width = 800, height = 600, children, textures = [] }: {
-    width?: number;
-    height?: number;
-    children?: any[];
-    textures?: any[];
-  },
+export async function render(
+  component,
 ) {
+  const { width, height, textures } = component();
   const app = await InnerApp.initialize(width, height, textures);
   function renderChild(child, app, event) {
     if (typeof child === "function") {
@@ -145,7 +141,10 @@ export async function App(
       }
     }
   }
+
   app.start((event) => {
+    currentHook = 0;
+    const { children } = component();
     for (const child of children) {
       renderChild(child, app, event);
     }
@@ -155,6 +154,35 @@ export async function App(
   });
 }
 
+export function App(
+  { width = 800, height = 600, children, textures = [] }: {
+    width?: number;
+    height?: number;
+    children?: any[];
+    textures?: any[];
+  },
+) {
+  return {
+    width,
+    height,
+    children,
+    textures,
+  };
+}
+
+const hooks = [];
+let currentHook = 0;
+
+export function useState<T>(initialValue: T): [() => T, (T) => void] {
+  const hook = hooks[currentHook] ?? initialValue;
+  let i = currentHook;
+  const setState = (value) => {
+    hooks[i] = value;
+  };
+  currentHook++;
+  return [hook, setState];
+}
+
 export function Fragment({ children }) {
   return children;
 }
@@ -162,8 +190,10 @@ export function Fragment({ children }) {
 export function Text(props = {}) {
   return (app, event) => {
     if (event.type == EventType.Draw) {
+      const text = props.children?.join("") ?? "";
+
       app.renderer.text(
-        props.children[0]() || " ",
+        text,
         props.position ?? new Vec2(0, 0),
         props.fontSize ?? 16,
         props.color ?? new Vec4(1, 1, 1, 1),
@@ -183,11 +213,12 @@ export function Rect(props = {}) {
   props.onMouseOut ??= nop;
   props.onClick ??= nop;
   props.onInput ??= nop;
-  props.onScroll ??= nop;
+  props.onMouseScroll ??= nop;
   props.onKeyDown ??= nop;
 
-  props.focused = false;
-  let mouseOver = false;
+  const [focused, setFocused] = useState(false);
+  const [mouseOver, setMouseOver] = useState(false);
+
   return (app, event) => {
     const ui = app.renderer;
 
@@ -210,26 +241,26 @@ export function Rect(props = {}) {
           props.onMouseOver(props);
         }
 
-        mouseOver = true;
-        if (!props.focused && event.type == EventType.MouseButtonDown) {
+        setMouseOver(true);
+        if (event.type == EventType.MouseButtonDown) {
           props.onClick(props);
-          props.focused = true;
+          setFocused(true);
           startTextInput();
         }
       } else if (mouseOver) {
-        mouseOver = false;
-        props.focused = false;
+        setMouseOver(false);
+        setFocused(false);
         stopTextInput();
         props.onMouseOut(props);
       }
     }
 
     if (
-      props.focused &&
+      focused &&
       event.type == EventType.TextInput
     ) {
       props.onInput(props, event);
-    } else if (props.focused && event.type == EventType.KeyDown) {
+    } else if (focused && event.type == EventType.KeyDown) {
       props.onKeyDown(props, event);
     }
 
