@@ -323,6 +323,7 @@ export class Renderer {
   height!: number;
 
   rectRenderer: RectRenderer;
+  #fontAtlasFile = "./Inter.bin";
 
   constructor(
     width: number,
@@ -358,7 +359,6 @@ export class Renderer {
     this.rectRenderer.text(text, position, fontSize, color);
   }
 
-  #fontAtlasFile = "./Inter.bin";
   loadFont() {
     const data = Deno.readFileSync(this.#fontAtlasFile);
     const size = { width: 4096, height: 4096 };

@@ -28,8 +28,8 @@ export function h(tag: any, props: any, ...children: any[]) {
 export async function render(
   component: any,
 ) {
-  const { width, height, textures } = component();
-  const app = await InnerApp.initialize(width, height, textures);
+  const { title, width, height, textures } = component();
+  const app = await InnerApp.initialize(width, height, textures, title);
   function renderChild(child: any, app: any, event: any) {
     if (typeof child === "function") {
       const c = child(app, event);
@@ -56,11 +56,12 @@ export async function render(
 }
 
 export function App(
-  { width = 800, height = 600, children, textures = [] }: {
+  { width = 800, height = 600, children, textures = [], title = "WGUI" }: {
     width?: number;
     height?: number;
     children?: any[];
     textures?: any[];
+    title?: string;
   },
 ) {
   return {
@@ -68,6 +69,7 @@ export function App(
     height,
     children,
     textures,
+    title,
   };
 }
 

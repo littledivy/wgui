@@ -1,17 +1,22 @@
 // deno-lint-ignore-file no-explicit-any
-import { EventType, WindowBuilder } from "sdl2";
+import { EventType, Window as SDL2Window, WindowBuilder } from "sdl2";
 import { SAMPLE_COUNT } from "./constants.ts";
 import { Renderer } from "./renderer.ts";
 
 export class InnerApp {
-  #surface;
-  #adapter;
-  #window;
-  renderer;
+  #surface: Deno.UnsafeWindowSurface;
+  #adapter: GPUCanvasContext;
+  #window: SDL2Window;
+  renderer: Renderer;
 
   #tasks = 0;
 
-  constructor(window: any, surface: any, adapter: any, renderer: any) {
+  constructor(
+    window: SDL2Window,
+    surface: Deno.UnsafeWindowSurface,
+    adapter: GPUCanvasContext,
+    renderer: Renderer,
+  ) {
     this.#window = window;
     this.#surface = surface;
     this.#adapter = adapter;
@@ -22,12 +27,13 @@ export class InnerApp {
     width: number,
     height: number,
     textures: any,
+    title="webgpu deno window",
   ): Promise<InnerApp> {
     const adapter = await navigator.gpu.requestAdapter();
     const device = await adapter!.requestDevice();
 
     const window = new WindowBuilder(
-      "webgpu deno window",
+      title,
       width,
       height,
     ).build();
