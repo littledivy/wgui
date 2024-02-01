@@ -1,9 +1,18 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { EventType, startTextInput, stopTextInput } from "sdl2";
-import { InnerApp } from "./src/app.ts";
-import { Vec2, Vec4 } from "./src/data.ts";
-import { loadFont } from "./src/text.ts";
+import { InnerApp } from "./app.ts";
+import { Vec2, Vec4 } from "./data.ts";
+import { loadFont } from "./text.ts";
+
+export enum NodeType {
+  Glyph = -2,
+  Rect = -1,
+  TexturedRect = 0,
+}
+export const SAMPLE_COUNT = 4;
+
+export const RECTANGLE_BUFFER_SIZE = 16 * 1024;
 
 await loadFont();
 const hooks: any = [];
@@ -177,8 +186,7 @@ export function Rect(props: any = {}) {
   };
 }
 
-export * from "./src/data.ts";
-export * from "./src/app.ts";
-export * from "./src/renderer.ts";
-export * from "./src/text.ts";
-export * from "./src/types.ts";
+export * from "./data.ts";
+export * from "./app.ts";
+export * from "./renderer.ts";
+export * from "./text.ts";

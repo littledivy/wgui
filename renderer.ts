@@ -1,8 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
-import { RECTANGLE_BUFFER_SIZE, SAMPLE_COUNT } from "./constants.ts";
 import { Vec2, Vec4 } from "./data.ts";
 import { getTextShape, ttf2 } from "./text.ts";
-import { NodeType } from "./types.ts";
+import { NodeType, RECTANGLE_BUFFER_SIZE, SAMPLE_COUNT } from "./mod.ts";
 
 class RectRenderer {
   rectangleData: Float32Array = new Float32Array(RECTANGLE_BUFFER_SIZE);

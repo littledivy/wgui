@@ -1,4 +1,4 @@
-import { instantiate } from "../wgui-ttf/wgui_ttf.generated.js";
+import { instantiate } from "./wgui-ttf/wgui_ttf.generated.js";
 
 // deno-lint-ignore no-explicit-any
 export let ttf2: any;

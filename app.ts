@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { EventType, Window as SDL2Window, WindowBuilder } from "sdl2";
-import { SAMPLE_COUNT } from "./constants.ts";
+import { SAMPLE_COUNT } from "./mod.ts";
 import { Renderer } from "./renderer.ts";
 
 export class InnerApp {
@@ -27,7 +27,7 @@ export class InnerApp {
     width: number,
     height: number,
     textures: any,
-    title="webgpu deno window",
+    title = "webgpu deno window",
   ): Promise<InnerApp> {
     const adapter = await navigator.gpu.requestAdapter();
     const device = await adapter!.requestDevice();
