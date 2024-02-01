@@ -5,7 +5,11 @@ function main() {
   const [counter, setCounter] = useState<number>(0);
 
   return (
-    <App width={600} height={700}>
+    <App
+      title="Hello World"
+      width={600}
+      height={700}
+    >
       <Rect
         size={new Vec2(100, 100)}
         color={new Vec4(1, 0, 0, 1)}

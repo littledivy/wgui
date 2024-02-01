@@ -5,8 +5,8 @@ import open from "npm:open";
 // https://github.com/denoland/deno/issues/22105
 import "https://deno.land/std@0.213.0/dotenv/load.ts";
 
-const clientID = Deno.env.get("SPOTIFY_CLIENT_ID");
-const clientSecret = Deno.env.get("SPOTIFY_CLIENT_SECRET");
+const clientID = Deno.env.get("SPOTIFY_CLIENT_ID")!;
+const clientSecret = Deno.env.get("SPOTIFY_CLIENT_SECRET")!;
 
 const scopes = [
   "user-read-private",
@@ -23,7 +23,7 @@ const url =
 
 let client: Client;
 
-function setItem(k, v) {
+function setItem(k: string, v: string) {
   try {
     localStorage.setItem(k, v);
   } catch {
@@ -31,7 +31,7 @@ function setItem(k, v) {
   }
 }
 
-function getItem(k) {
+function getItem(k:string) {
   try {
     return localStorage.getItem(k);
   } catch {
@@ -66,7 +66,7 @@ export async function getSavedTracks() {
       token: {
         clientID,
         clientSecret,
-        code: token,
+        code: token as string | undefined,
         redirectURL: "http://localhost:8888",
       },
       userAuthorizedToken: true,

@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 /** @jsx h */
 import {
   App,
@@ -57,11 +58,11 @@ function main() {
       <Rect
         size={new Vec2(500, 600)}
         position={layout.center.subtract(new Vec2(250, 300))}
-        onMouseScroll={(self, event) => {
+        onMouseScroll={(self: any, event: any) => {
           topTrackIndex -= event.y;
           topTrackIndex = Math.max(0, topTrackIndex);
           topTrackIndex = Math.min(
-            tracks.filter((m) =>
+            tracks.filter((m: any) =>
               m.name.toLowerCase().includes(search.toLowerCase())
             ).length - maxTracks,
             topTrackIndex,
@@ -77,16 +78,16 @@ function main() {
         position={layout.center.subtract(new Vec2(250 - 25, 300 - 25))}
         borderRadius={25}
         color={INPUT_COLOR}
-        onMouseOver={(self) => {
+        onMouseOver={(self: any) => {
           self.color = HIGHLIGHT_COLOR;
         }}
-        onMouseOut={(self) => self.color = INPUT_COLOR}
-        onKeyDown={(self, event) => {
+        onMouseOut={(self: any) => self.color = INPUT_COLOR}
+        onKeyDown={(self: any, event: any) => {
           if (event.keysym.scancode == 42) {
             setSearch(search.slice(0, -1));
           }
         }}
-        onInput={(self, event) => {
+        onInput={(self: any, event: any) => {
           setSearch(search + event.text);
         }}
       />
@@ -100,8 +101,8 @@ function main() {
         {search || "Search"}
       </Text>
 
-      {tracks.filter((m) => m.name.toLowerCase().includes(search.toLowerCase()))
-        .slice(topTrackIndex, topTrackIndex + maxTracks).map((m, i) => (
+      {tracks.filter((m: any) => m.name.toLowerCase().includes(search.toLowerCase()))
+        .slice(topTrackIndex, topTrackIndex + maxTracks).map((m: any, i: number) => (
           <Fragment>
             <Rect
               size={new Vec2(500 - 50, 100)}
@@ -169,8 +170,8 @@ function main() {
                 )}
               usage={m.index}
               borderRadius={25}
-              onMouseOver={(self) => self.borderRadius = 0}
-              onMouseOut={(self) => self.borderRadius = 25}
+              onMouseOver={(self: any) => self.borderRadius = 0}
+              onMouseOut={(self: any) => self.borderRadius = 25}
             >
             </Rect>
           </Fragment>
