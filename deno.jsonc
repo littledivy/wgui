@@ -6,7 +6,7 @@
   },
   "tasks": {
     "wasmbuild": "deno run -A https://deno.land/x/wasmbuild/main.ts --out wgui-ttf/",
-    "example:music-run": "deno run -A --env=examples/music-app/.env --unstable-ffi --unstable-webgpu wgui-examples/music-app/main.tsx",
+    "example:music-run": "deno run -A --env=wgui-examples/music-app/.env --unstable-ffi --unstable-webgpu wgui-examples/music-app/main.tsx",
     "example:music-compile": "deno compile -A --no-check --env --unstable-ffi --unstable-webgpu wgui-examples/music-app/main.tsx --standalone",
     "example:hello-world-run": "deno run -A --unstable-ffi --unstable-webgpu wgui-examples/hello-world/main.tsx"
   }
