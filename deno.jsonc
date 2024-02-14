@@ -1,13 +1,21 @@
 {
+  "name": "@denosaurs/wgui",
+  "version": "0.1.0",
+  "exports": {
+    ".": "./mod.ts",
+    "./wgui-ttf": "./wgui-ttf/wgui_ttf.generated.js"
+  },
   "imports": {
-    "sdl2": "https://deno.land/x/sdl2@0.9.0/mod.ts",
+    "sdl2": "jsr:@divy/sdl2@0.10.1",
+    "taffy":"jsr:@loading/taffy@0.1.1",
     "jxa": "https://raw.githubusercontent.com/littledivy/jxa/main/run/mod.ts",
     "wgui": "./mod.ts"
   },
   "tasks": {
     "wasmbuild": "deno run -A https://deno.land/x/wasmbuild/main.ts --out wgui-ttf/",
-    "example:music-run": "deno run -A --env=wgui-examples/music-app/.env --unstable-ffi --unstable-webgpu wgui-examples/music-app/main.tsx",
+    "example:music": "deno run -A --env=wgui-examples/music-app/.env --unstable-ffi --unstable-webgpu wgui-examples/music-app/main.tsx",
     "example:music-compile": "deno compile -A --no-check --env --unstable-ffi --unstable-webgpu wgui-examples/music-app/main.tsx --standalone",
-    "example:hello-world-run": "deno run -A --unstable-ffi --unstable-webgpu wgui-examples/hello-world/main.tsx"
+    "example:hello-world": "deno run -A --unstable-ffi --unstable-webgpu wgui-examples/hello-world/main.tsx",
+    "example:hello-world-compile": "deno compile -A --no-check --unstable-ffi --unstable-webgpu wgui-examples/hello-world/main.tsx --standalone"
   }
 }

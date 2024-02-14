@@ -2,6 +2,7 @@
 import { EventType, Window as SDL2Window, WindowBuilder } from "sdl2";
 import { SAMPLE_COUNT } from "./mod.ts";
 import { Renderer } from "./renderer.ts";
+import { Document } from "./layout.ts";
 
 export class InnerApp {
   #surface: Deno.UnsafeWindowSurface;
@@ -10,17 +11,22 @@ export class InnerApp {
   renderer: Renderer;
 
   #tasks = 0;
+  #docID: number;
 
   constructor(
     window: SDL2Window,
     surface: Deno.UnsafeWindowSurface,
     adapter: GPUCanvasContext,
     renderer: Renderer,
+    docID: number,
   ) {
     this.#window = window;
     this.#surface = surface;
     this.#adapter = adapter;
     this.renderer = renderer;
+    this.#docID = docID;
+    this.renderer.setDocID(docID);
+
   }
 
   static async initialize(
@@ -65,11 +71,9 @@ export class InnerApp {
     );
 
     renderer.loadFont();
-
-    const app = new InnerApp(window, surface, context, renderer);
-    const texturesTask = textures.map((texture: any) => {
-      return app.addTask(texture);
-    });
+    const docID = Document.createDocument(width+"px", height+"px");
+    const app = new InnerApp(window, surface, context, renderer, docID);
+    const texturesTask = textures.map((texture: any) => app.addTask(texture));
     renderer.setTextures(texturesTask);
     return app;
   }
