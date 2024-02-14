@@ -16,6 +16,7 @@ export const RECTANGLE_BUFFER_SIZE = 16 * 1024;
 
 await loadFont();
 const hooks: any = [];
+
 let currentHook = 0;
 
 export function h(tag: any, props: any, ...children: any[]) {
@@ -37,8 +38,8 @@ export function h(tag: any, props: any, ...children: any[]) {
 export async function render(
   component: any,
 ) {
-  const { title, width, height, textures } = component();
-  const app = await InnerApp.initialize(width, height, textures, title);
+  const { title, styles, textures } = component();
+  const app = await InnerApp.initialize(styles, textures, title);
   function renderChild(child: any, app: any, event: any) {
     if (typeof child === "function") {
       const c = child(app, event);
@@ -65,17 +66,20 @@ export async function render(
 }
 
 export function App(
-  { width = 800, height = 600, children, textures = [], title = "WGUI" }: {
-    width?: number;
-    height?: number;
+  {
+    styles,
+    children,
+    textures = [],
+    title = "WGUI",
+  }: {
+    styles?: any;
     children?: any[];
     textures?: any[];
     title?: string;
   },
 ) {
   return {
-    width,
-    height,
+    styles,
     children,
     textures,
     title,
@@ -92,11 +96,15 @@ export function useState<T>(initialValue: T): [T, (T: T) => void] {
   return [hook, setState];
 }
 
-export function Fragment({ children }: any) {
+export function Fragment({ children = [] }: { children?: any[] }): any[] {
   return children;
 }
 
-export function Text(props: any = {}) {
+export function Text(
+  props: Partial<
+    { position: Vec2; fontSize: number; color: Vec4; children: any[] }
+  > = {},
+) {
   return (app: any, event: any) => {
     if (event.type == EventType.Draw) {
       const text = props.children?.join("") ?? "";

@@ -1,4 +1,6 @@
 export class Layout {
+  width: number;
+  height: number;
   constructor(
     width: number,
     height: number,
@@ -6,9 +8,6 @@ export class Layout {
     this.width = width;
     this.height = height;
   }
-
-  width: number;
-  height: number;
 
   get center(): Vec2 {
     return new Vec2(this.width / 2, this.height / 2);
@@ -37,7 +36,13 @@ const EPSILON = 0.001;
  * A 2D vector.
  */
 export class Vec2 {
-  constructor(public readonly x: number, public readonly y: number) {}
+  x: number;
+  y: number;
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
 
   add(other: Vec2): Vec2 {
     return new Vec2(this.x + other.x, this.y + other.y);
@@ -92,12 +97,22 @@ export class Vec2 {
  * A 4-dimensional vector.
  */
 export class Vec4 {
+  x: number;
+  y: number;
+  z: number;
+  w: number;
+
   constructor(
-    public readonly x: number,
-    public readonly y: number,
-    public readonly z: number,
-    public readonly w: number,
-  ) {}
+    x: number,
+    y: number,
+    z: number,
+    w: number,
+  ) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+    this.w = w;
+  }
 
   add(other: Vec4): Vec4 {
     return new Vec4(

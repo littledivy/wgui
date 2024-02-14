@@ -3,7 +3,9 @@ import { instantiate } from "./wgui-ttf/wgui_ttf.generated.js";
 // deno-lint-ignore no-explicit-any
 export let ttf2: any;
 
-function fileExistsDontCareAboutTOCTOUDontComeAfterMePls(path: string) {
+function fileExistsDontCareAboutTOCTOUDontComeAfterMePls(
+  path: string,
+): boolean {
   try {
     Deno.statSync(path);
     return true;
@@ -24,7 +26,10 @@ function edt1d(
   v: Uint16Array,
   z: Float64Array,
 ): void {
-  let q: number, k: number, s: number, r: number;
+  let q: number;
+  let k: number;
+  let s: number;
+  let r: number;
 
   v[0] = 0;
   z[0] = -INF;
@@ -124,7 +129,7 @@ export function toSDF(
   return new ImageData(data, width, height);
 }
 
-export async function loadFont() {
+export async function loadFont(): Promise<void> {
   const { parse_ttf } = await instantiate();
   const fontAtlas = "./Inter.bin";
   if (!fileExistsDontCareAboutTOCTOUDontComeAfterMePls(fontAtlas)) {
@@ -192,11 +197,14 @@ export async function loadFont() {
   });
 }
 
-
 export function getTextShape(
   text: string,
   size: number,
-) {
+): {
+  positions: Float32Array;
+  sizes: Float32Array;
+  uvs: Float32Array;
+} {
   const positions = new Float32Array(text.length * 2);
   const sizes = new Float32Array(text.length * 2);
   const uvs = new Float32Array(text.length * 4);

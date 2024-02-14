@@ -17,35 +17,39 @@ class RectRenderer {
   glyphSampler: GPUSampler;
   texture: GPUTexture;
   imageCount: number;
+  #device: GPUDevice;
+  #context: GPUCanvasContext;
 
   constructor(
     width: number,
     height: number,
-    private device: GPUDevice,
-    private readonly context: GPUCanvasContext,
+    device: GPUDevice,
+    context: GPUCanvasContext,
   ) {
+    this.#device = device;
+    this.#context = context;
     this.width = width;
     this.height = height;
 
     const rectWgsl = new URL("wgui.wgsl", import.meta.url);
-    const rectangleModule = device.createShaderModule({
+    const rectangleModule = this.#device.createShaderModule({
       code: Deno.readTextFileSync(rectWgsl),
     });
 
-    this.vertexBuffer = device.createBuffer({
+    this.vertexBuffer = this.#device.createBuffer({
       label: "vertex",
       // Just two triangles.
       size: 2 * 2 * 3 * Float32Array.BYTES_PER_ELEMENT,
       usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
     });
 
-    this.rectangleBuffer = device.createBuffer({
+    this.rectangleBuffer = this.#device.createBuffer({
       label: "rectangle",
       size: RECTANGLE_BUFFER_SIZE * Float32Array.BYTES_PER_ELEMENT,
       usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
 
-    const rectangleBindGroupLayout = device.createBindGroupLayout({
+    const rectangleBindGroupLayout = this.#device.createBindGroupLayout({
       label: "rectangle bind group layout",
       entries: [
         {
@@ -81,12 +85,12 @@ class RectRenderer {
       ],
     });
 
-    const rectanglePipelineLayout = device.createPipelineLayout({
+    const rectanglePipelineLayout = this.#device.createPipelineLayout({
       label: "rectangle pipeline layout",
       bindGroupLayouts: [rectangleBindGroupLayout],
     });
 
-    this.rectanglePipeline = device.createRenderPipeline({
+    this.rectanglePipeline = this.#device.createRenderPipeline({
       label: "blurred rectangles",
       layout: rectanglePipelineLayout,
       vertex: {
@@ -127,14 +131,14 @@ class RectRenderer {
       multisample: { count: SAMPLE_COUNT },
     });
 
-    this.sampler = device.createSampler({
+    this.sampler = this.#device.createSampler({
       addressModeU: "clamp-to-edge",
       addressModeV: "clamp-to-edge",
       magFilter: "nearest",
       minFilter: "nearest",
     });
 
-    this.glyphSampler = device.createSampler({
+    this.glyphSampler = this.#device.createSampler({
       addressModeU: "clamp-to-edge",
       addressModeV: "clamp-to-edge",
       magFilter: "nearest",
@@ -142,7 +146,7 @@ class RectRenderer {
     });
 
     // Image texture
-    this.texture = device.createTexture({
+    this.texture = this.#device.createTexture({
       format: "rgba8unorm",
       size: [360, 360, 20],
       usage: GPUTextureUsage.TEXTURE_BINDING |
@@ -155,7 +159,11 @@ class RectRenderer {
     // Just regular full-screen quad consisting of two triangles.
     const vertices = [0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1];
 
-    device.queue.writeBuffer(this.vertexBuffer, 0, new Float32Array(vertices));
+    this.#device.queue.writeBuffer(
+      this.vertexBuffer,
+      0,
+      new Float32Array(vertices),
+    );
   }
 
   setTextures(textures: any) {
@@ -178,7 +186,7 @@ class RectRenderer {
     source: any,
     idx: number,
   ) {
-    this.device.queue.writeTexture(
+    this.#device.queue.writeTexture(
       {
         texture: this.texture,
         origin: [0, 0, idx],
@@ -193,7 +201,7 @@ class RectRenderer {
   }
 
   setFont(texture: GPUTexture) {
-    this.rectangleBindGroup = this.device.createBindGroup({
+    this.rectangleBindGroup = this.#device.createBindGroup({
       label: "rectangles",
       layout: this.rectanglePipeline.getBindGroupLayout(0),
       entries: [
@@ -241,7 +249,7 @@ class RectRenderer {
       ],
     });
 
-    this.device.queue.writeBuffer(this.rectangleBuffer, 0, this.rectangleData);
+    this.#device.queue.writeBuffer(this.rectangleBuffer, 0, this.rectangleData);
 
     renderPass.setViewport(
       0,
@@ -320,23 +328,33 @@ class RectRenderer {
 export class Renderer {
   width!: number;
   height!: number;
-
   rectRenderer: RectRenderer;
+  #device: GPUDevice;
+  #context: GPUCanvasContext;
+  #colorTextureView: GPUTextureView;
   #fontAtlasFile = "./Inter.bin";
+  #docID!: number;
 
   constructor(
     width: number,
     height: number,
-    private device: GPUDevice,
-    private readonly context: GPUCanvasContext,
-    private colorTextureView: GPUTextureView,
+    device: GPUDevice,
+    context: GPUCanvasContext,
+    colorTextureView: GPUTextureView,
   ) {
+    this.#device = device;
+    this.#context = context;
+    this.#colorTextureView = colorTextureView;
     this.rectRenderer = new RectRenderer(
       width,
       height,
-      device,
-      context,
+      this.#device,
+      this.#context,
     );
+  }
+
+  setDocID(docID: number) {
+    this.#docID = docID;
   }
 
   setTextures(textures: any) {
@@ -362,7 +380,7 @@ export class Renderer {
     const data = Deno.readFileSync(this.#fontAtlasFile);
     const size = { width: 4096, height: 4096 };
 
-    const texture = this.device.createTexture({
+    const texture = this.#device.createTexture({
       label: "image bitmap",
       size,
       format: "rgba8unorm",
@@ -371,7 +389,7 @@ export class Renderer {
         GPUTextureUsage.RENDER_ATTACHMENT,
     });
 
-    this.device.queue.writeTexture(
+    this.#device.queue.writeTexture(
       { texture },
       data,
       { bytesPerRow: size.width * 4 },
@@ -382,17 +400,17 @@ export class Renderer {
   }
 
   render(): void {
-    const commandEncoder = this.device.createCommandEncoder({
+    const commandEncoder = this.#device.createCommandEncoder({
       label: "render pass",
     });
 
-    const target = this.context.getCurrentTexture().createView();
+    const target = this.#context.getCurrentTexture().createView();
     this.rectRenderer.render(
       commandEncoder,
-      this.colorTextureView,
+      this.#colorTextureView,
       target,
       "clear",
     );
-    this.device.queue.submit([commandEncoder.finish()]);
+    this.#device.queue.submit([commandEncoder.finish()]);
   }
 }

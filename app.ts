@@ -2,6 +2,7 @@
 import { EventType, Window as SDL2Window, WindowBuilder } from "sdl2";
 import { SAMPLE_COUNT } from "./mod.ts";
 import { Renderer } from "./renderer.ts";
+import { Document } from "./layout.ts";
 
 export class InnerApp {
   #surface: Deno.UnsafeWindowSurface;
@@ -10,22 +11,25 @@ export class InnerApp {
   renderer: Renderer;
 
   #tasks = 0;
+  #docID: number;
 
   constructor(
     window: SDL2Window,
     surface: Deno.UnsafeWindowSurface,
     adapter: GPUCanvasContext,
     renderer: Renderer,
+    docID: number,
   ) {
     this.#window = window;
     this.#surface = surface;
     this.#adapter = adapter;
     this.renderer = renderer;
+    this.#docID = docID;
+    this.renderer.setDocID(docID);
   }
 
   static async initialize(
-    width: number,
-    height: number,
+    style: any,
     textures: any,
     title = "webgpu deno window",
   ): Promise<InnerApp> {
@@ -34,15 +38,15 @@ export class InnerApp {
 
     const window = new WindowBuilder(
       title,
-      width,
-      height,
+      style.width,
+      style.height,
     ).build();
 
     const surface = window.windowSurface();
     const context = surface.getContext("webgpu");
     context.configure({
-      width,
-      height,
+      width: style.width,
+      height: style.height,
       device,
       format: "bgra8unorm",
       alphaMode: "opaque",
@@ -50,26 +54,27 @@ export class InnerApp {
 
     const colorTexture = device.createTexture({
       label: "color",
-      size: { width, height },
+      size: { width: style.width, height: style.height },
       sampleCount: SAMPLE_COUNT,
       format: "bgra8unorm",
       usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
     });
     const colorTextureView = colorTexture.createView({ label: "color" });
     const renderer = new Renderer(
-      width,
-      height,
+      style.width,
+      style.height,
       device,
       context,
       colorTextureView,
     );
 
     renderer.loadFont();
-
-    const app = new InnerApp(window, surface, context, renderer);
-    const texturesTask = textures.map((texture: any) => {
-      return app.addTask(texture);
+    const docID = Document.createDocument({
+      width: style.width,
+      height: style.height,
     });
+    const app = new InnerApp(window, surface, context, renderer, docID);
+    const texturesTask = textures.map((texture: any) => app.addTask(texture));
     renderer.setTextures(texturesTask);
     return app;
   }
