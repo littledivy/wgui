@@ -7,8 +7,11 @@ function main() {
   return (
     <App
       title="Hello World"
-      width={600}
-      height={700}
+      styles={{
+        width: 800,
+        height: 600,
+        marginRight: "auto",
+      }}
     >
       <Rect
         size={new Vec2(100, 100)}

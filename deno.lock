@@ -3,7 +3,7 @@
   "packages": {
     "specifiers": {
       "jsr:@divy/sdl2@0.10.1": "jsr:@divy/sdl2@0.10.1",
-      "jsr:@loading/taffy@0.1.1": "jsr:@loading/taffy@0.1.1",
+      "jsr:@loading/taffy@0.1.2": "jsr:@loading/taffy@0.1.2",
       "jsr:@std/assert": "jsr:@std/assert@0.214.0",
       "jsr:@std/fmt@^0.214.0": "jsr:@std/fmt@0.214.0",
       "jsr:@std/testing": "jsr:@std/testing@0.215.0",
@@ -13,7 +13,7 @@
     },
     "jsr": {
       "@divy/sdl2@0.10.1": {},
-      "@loading/taffy@0.1.1": {},
+      "@loading/taffy@0.1.2": {},
       "@std/assert@0.214.0": {
         "dependencies": [
           "jsr:@std/fmt@^0.214.0"
@@ -721,7 +721,7 @@
     "https://deno.land/x/wasmbuild@0.15.6/loader/fetch.ts": "7d015203a93cbadd05034cbb6e726d35f47e1f51140d91e69aeddc5d71b06ec8",
     "https://jsr.io/@divy/sdl2/0.10.1/byte_type.ts": "4a85441caeff5682188600acd2432189e8843a09e0e3570ddad23c5940504974",
     "https://jsr.io/@divy/sdl2/0.10.1/mod.ts": "ec76867ba7fecf3da742d502d858ffc7510f19b60390239b0b15e5a3c4acfb0e",
-    "https://jsr.io/@loading/taffy/0.1.1/lib/taffy_layout.generated.js": "4f7d8abbd54f401da8a7acc61476f3e1d5d25c3c28dd0e839e3f9ab127902bcf",
+    "https://jsr.io/@loading/taffy/0.1.2/lib/taffy_layout.generated.js": "257880d65168fea3dadf3064761ab2079a59935bf3e08af5602cacbfc9156aca",
     "https://jsr.io/@std/assert/0.214.0/_constants.ts": "a271e8ef5a573f1df8e822a6eb9d09df064ad66a4390f21b3e31f820a38e0975",
     "https://jsr.io/@std/assert/0.214.0/_diff.ts": "dbacca10c0e1acb3da9b6a90bec50c7d1add05deb5abe9614a3784c9d5a0b887",
     "https://jsr.io/@std/assert/0.214.0/_format.ts": "0ba808961bf678437fb486b56405b6fefad2cf87b5809667c781ddee8c32aff4",
@@ -759,7 +759,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@divy/sdl2@0.10.1",
-      "jsr:@loading/taffy@0.1.1"
+      "jsr:@loading/taffy@0.1.2"
     ]
   }
 }

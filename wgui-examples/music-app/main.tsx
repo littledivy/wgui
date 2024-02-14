@@ -50,8 +50,10 @@ function main() {
 
   return (
     <App
-      width={layout.width}
-      height={layout.height}
+      styles={{
+        width: 800,
+        height: 600,
+      }}
       textures={textures}
     >
       {/* Main div */}
@@ -101,8 +103,13 @@ function main() {
         {search || "Search"}
       </Text>
 
-      {tracks.filter((m: any) => m.name.toLowerCase().includes(search.toLowerCase()))
-        .slice(topTrackIndex, topTrackIndex + maxTracks).map((m: any, i: number) => (
+      {tracks.filter((m: any) =>
+        m.name.toLowerCase().includes(search.toLowerCase())
+      )
+        .slice(topTrackIndex, topTrackIndex + maxTracks).map((
+          m: any,
+          i: number,
+        ) => (
           <Fragment>
             <Rect
               size={new Vec2(500 - 50, 100)}

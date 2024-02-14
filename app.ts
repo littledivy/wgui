@@ -26,12 +26,10 @@ export class InnerApp {
     this.renderer = renderer;
     this.#docID = docID;
     this.renderer.setDocID(docID);
-
   }
 
   static async initialize(
-    width: number,
-    height: number,
+    style: any,
     textures: any,
     title = "webgpu deno window",
   ): Promise<InnerApp> {
@@ -40,15 +38,15 @@ export class InnerApp {
 
     const window = new WindowBuilder(
       title,
-      width,
-      height,
+      style.width,
+      style.height,
     ).build();
 
     const surface = window.windowSurface();
     const context = surface.getContext("webgpu");
     context.configure({
-      width,
-      height,
+      width: style.width,
+      height: style.height,
       device,
       format: "bgra8unorm",
       alphaMode: "opaque",
@@ -56,22 +54,25 @@ export class InnerApp {
 
     const colorTexture = device.createTexture({
       label: "color",
-      size: { width, height },
+      size: { width: style.width, height: style.height },
       sampleCount: SAMPLE_COUNT,
       format: "bgra8unorm",
       usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
     });
     const colorTextureView = colorTexture.createView({ label: "color" });
     const renderer = new Renderer(
-      width,
-      height,
+      style.width,
+      style.height,
       device,
       context,
       colorTextureView,
     );
 
     renderer.loadFont();
-    const docID = Document.createDocument(width+"px", height+"px");
+    const docID = Document.createDocument({
+      width: style.width,
+      height: style.height,
+    });
     const app = new InnerApp(window, surface, context, renderer, docID);
     const texturesTask = textures.map((texture: any) => app.addTask(texture));
     renderer.setTextures(texturesTask);

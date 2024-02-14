@@ -9,80 +9,27 @@ import {
 
 const { Node, TaffyTree } = await instantiate();
 
-export function parseStyleUnit(
-  text: string,
-): { type: number; value: number } | number {
-  if (text.endsWith("px")) {
-    return { type: StyleUnit.Px, value: Number(text.slice(0, -2)) };
-  }
-  if (text.endsWith("%")) {
-    return { type: StyleUnit.Percent, value: Number(text.slice(0, -1)) };
-  }
-  if (text.endsWith("fr")) {
-    return { type: StyleUnit.Fr, value: Number(text.slice(0, -2)) };
-  }
-  if (text.endsWith("auto")) {
-    return StyleUnit.Auto;
-  }
-  if (text.endsWith("min-content")) {
-    return StyleUnit.MinContent;
-  }
-  if (text.endsWith("max-content")) {
-    return StyleUnit.MaxContent;
-  }
-  if (text.endsWith("fit-content")) {
-    return StyleUnit.FitContentPx;
-  }
-  if (text.startsWith("fit-content(")) {
-    if (text.endsWith("%)")) {
-      return {
-        type: StyleUnit.FitContentPercent,
-        value: Number(text.slice(12, -2)),
-      };
-    }
-    if (text.endsWith("px)")) {
-      return {
-        type: StyleUnit.FitContentPx,
-        value: Number(text.slice(12, -3)),
-      };
-    }
-    return { type: StyleUnit.FitContentPx, value: Number(text.slice(12, -1)) };
-  }
-
-  throw new Error("Invalid unit");
-}
-
-export function parseNumber(text: string): { type: number; value: number } {
-  const styleUnit = parseStyleUnit(text);
-  if (typeof styleUnit === "number") {
-    return { type: 0, value: styleUnit };
-  }
-  return styleUnit;
-}
-
 export class Document {
   static documents: Record<number, Document> = {};
   static nextId = 0;
 
   #tree: ITaffyTree = new TaffyTree();
-  #mainNode: INode = new Node(this.#tree);
+  #mainNode: INode;
   #ids: Map<string, number> = new Map();
   #computedLayout!: ILayout;
-  #size: any = 100;
+  #size: any;
   #childCount = 0;
-  constructor(width: string, height: string) {
-    const { type: widthType, value: widthValue } = parseNumber(width);
-    const { type: heightType, value: heightValue } = parseNumber(height);
-    this.#mainNode.setWidth(widthValue, widthType as any);
-    this.#mainNode.setHeight(heightValue, heightType as any);
+  constructor(style: any, size: any = 100) {
+    this.#mainNode = new Node(this.#tree, style);
+    this.#size = size;
   }
 
   setSize(size: any) {
     this.#size = size;
   }
 
-  addChild(id: string) {
-    const node = new Node(this.#tree);
+  addChild(id: string, style: any = {}) {
+    const node = new Node(this.#tree, style);
     this.#ids.set(id, this.#childCount);
     this.#childCount++;
     this.#mainNode.addChild(node);
@@ -124,9 +71,9 @@ export class Document {
     });
   }
 
-  static createDocument(width: string, height: string) {
+  static createDocument(style:any = {}) {
     const id = Document.nextId++;
-    const document = new Document(width, height);
+    const document = new Document(style);
     Document.documents[id] = document;
     return id;
   }
