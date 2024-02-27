@@ -7,7 +7,7 @@
   },
   "imports": {
     "sdl2": "jsr:@divy/sdl2@0.10.1",
-    "taffy":"jsr:@loading/taffy@0.1.2",
+    "taffy": "jsr:@loading/taffy@0.1.2",
     "jxa": "https://raw.githubusercontent.com/littledivy/jxa/main/run/mod.ts",
     "wgui": "./mod.ts"
   },

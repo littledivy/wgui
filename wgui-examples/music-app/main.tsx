@@ -58,7 +58,10 @@ function main() {
     >
       {/* Main div */}
       <Rect
-        size={new Vec2(500, 600)}
+        styles={{
+          width: 500,
+          height: 600,
+        }}
         position={layout.center.subtract(new Vec2(250, 300))}
         onMouseScroll={(self: any, event: any) => {
           topTrackIndex -= event.y;
@@ -76,7 +79,10 @@ function main() {
       />
 
       <Rect
-        size={new Vec2(500 - 50, 50)}
+        styles={{
+          width: 500 - 50,
+          height: 50,
+        }}
         position={layout.center.subtract(new Vec2(250 - 25, 300 - 25))}
         borderRadius={25}
         color={INPUT_COLOR}
@@ -112,7 +118,10 @@ function main() {
         ) => (
           <Fragment>
             <Rect
-              size={new Vec2(500 - 50, 100)}
+              styles={{
+                width: 500 - 50,
+                height: 100,
+              }}
               position={layout.center.subtract(new Vec2(250 - 25, 300 - 25))
                 .add(
                   new Vec2(0, 50 + 100 * i + 25 * (i + 1)),
@@ -170,7 +179,10 @@ function main() {
 
             {/* Album art inside the rect, aligned right */}
             <Rect
-              size={new Vec2(100, 100)}
+              styles={{
+                width: 100,
+                height: 100,
+              }}
               position={layout.center.subtract(new Vec2(250 - 25, 300 - 25))
                 .add(
                   new Vec2(500 - 50 - 100, 50 + 100 * i + 25 * (i + 1)),

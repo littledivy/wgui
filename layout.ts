@@ -71,7 +71,7 @@ export class Document {
     });
   }
 
-  static createDocument(style:any = {}) {
+  static createDocument(style: any = {}) {
     const id = Document.nextId++;
     const document = new Document(style);
     Document.documents[id] = document;

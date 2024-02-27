@@ -122,9 +122,10 @@ export function Text(
 export function Rect(props: any = {}) {
   props.color ??= new Vec4(1, 1, 1, 1);
   props.position ??= new Vec2(0, 0);
-  props.size ??= new Vec2(100, 100);
+  props.styles.width ??= 100;
+  props.styles.height ??= 100;
   props.borderRadius ??= 0;
-
+  props.size ??= new Vec2(props.styles.width, props.styles.height);
   const nop = () => {};
   props.onMouseOver ??= nop;
   props.onMouseOut ??= nop;

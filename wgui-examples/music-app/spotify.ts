@@ -31,7 +31,7 @@ function setItem(k: string, v: string) {
   }
 }
 
-function getItem(k:string) {
+function getItem(k: string) {
   try {
     return localStorage.getItem(k);
   } catch {

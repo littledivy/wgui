@@ -10,11 +10,15 @@ function main() {
       styles={{
         width: 800,
         height: 600,
+        backgroundColor: "#f0f0f0",
         marginRight: "auto",
       }}
     >
       <Rect
-        size={new Vec2(100, 100)}
+        styles={{
+          width: 100,
+          height: 100,
+        }}
         color={new Vec4(1, 0, 0, 1)}
         onClick={() => {
           setCounter(counter + 1);
