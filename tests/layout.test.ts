@@ -1,5 +1,5 @@
 import { Document } from "../layout.ts";
-import { assertEquals} from "jsr:@std/assert";
+import { assertEquals } from "jsr:@std/assert";
 Deno.test("Document", () => {
   const doc = new Document({
     width: 100,
