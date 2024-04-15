@@ -2,11 +2,6 @@
 
 Tiny UI framework for Deno
 
-> ⚠️ Experimental: Demo project for Deno's WebGPU "Bring your own Window"
-> feature.
->
-> Depends on unreleased Deno and x/sdl2
-
 ```tsx
 /** @jsx h */
 import { App, Fragment, h, Rect, Text } from "./wgui.ts";
