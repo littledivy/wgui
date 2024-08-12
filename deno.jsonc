@@ -3,13 +3,15 @@
   "version": "0.1.0",
   "exports": {
     ".": "./mod.ts",
+    "hooks": "./hooks.ts",
     "./wgui-ttf": "./wgui-ttf/wgui_ttf.generated.js"
   },
   "imports": {
     "sdl2": "jsr:@divy/sdl2@0.10.1",
     "taffy": "jsr:@loading/taffy@0.1.2",
     "jxa": "https://raw.githubusercontent.com/littledivy/jxa/main/run/mod.ts",
-    "wgui": "./mod.ts"
+    "wgui": "./mod.ts",
+    "wgui/hooks": "./hooks.ts"
   },
   "tasks": {
     "wasmbuild": "deno run -A https://deno.land/x/wasmbuild/main.ts --out wgui-ttf/",

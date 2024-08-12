@@ -1,5 +1,7 @@
 /* @jsx h */
-import { App, h, Rect, render, Text, useState, Vec2, Vec4 } from "wgui";
+// deno-lint-ignore verbatim-module-syntax
+import { App, h, Rect, render, Text, Vec4 } from "wgui";
+import { useState } from "wgui/hooks";
 
 function main() {
   const [counter, setCounter] = useState<number>(0);

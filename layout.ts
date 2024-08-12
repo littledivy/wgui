@@ -1,10 +1,10 @@
 // deno-lint-ignore-file no-explicit-any
 import {
   instantiate,
-  Layout as ILayout,
-  Node as INode,
+  type Layout as ILayout,
+  type Node as INode,
   StyleUnit,
-  TaffyTree as ITaffyTree,
+  type TaffyTree as ITaffyTree,
 } from "taffy";
 
 const { Node, TaffyTree } = await instantiate();

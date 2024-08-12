@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
-import { EventType, Window as SDL2Window, WindowBuilder } from "sdl2";
-import { SAMPLE_COUNT } from "./mod.ts";
+import { EventType, type Window as SDL2Window, WindowBuilder } from "sdl2";
+import { SAMPLE_COUNT } from "wgui";
 import { Renderer } from "./renderer.ts";
 import { Document } from "./layout.ts";
 
