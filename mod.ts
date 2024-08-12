@@ -4,6 +4,7 @@ import { EventType, startTextInput, stopTextInput } from "sdl2";
 import { InnerApp } from "./app.ts";
 import { Vec2, Vec4 } from "./data.ts";
 import { loadFont } from "./text.ts";
+import { setCurrentHook, useState } from "wgui/hooks";
 
 export enum NodeType {
   Glyph = -2,
@@ -15,9 +16,7 @@ export const SAMPLE_COUNT = 4;
 export const RECTANGLE_BUFFER_SIZE = 16 * 1024;
 
 await loadFont();
-const hooks: any = [];
 
-let currentHook = 0;
 
 export function h(tag: any, props: any, ...children: any[]) {
   if (typeof tag === "string") {
@@ -54,7 +53,7 @@ export async function render(
   }
 
   app.start((event) => {
-    currentHook = 0;
+    setCurrentHook(0);
     const { children } = component();
     for (const child of children) {
       renderChild(child, app, event);
@@ -86,15 +85,6 @@ export function App(
   };
 }
 
-export function useState<T>(initialValue: T): [T, (T: T) => void] {
-  const hook = hooks[currentHook] ?? initialValue;
-  const i = currentHook;
-  const setState = (value: any) => {
-    hooks[i] = value;
-  };
-  currentHook++;
-  return [hook, setState];
-}
 
 export function Fragment({ children = [] }: { children?: any[] }): any[] {
   return children;

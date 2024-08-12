@@ -8,10 +8,10 @@ import {
   Rect,
   render,
   Text,
-  useState,
   Vec2,
   Vec4,
 } from "wgui";
+import { useState } from "wgui/hooks";
 import {
   getLibraryTracks as getAppleMusicSavedTracks,
   getTrackCover,
