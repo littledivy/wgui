@@ -1,16 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 /** @jsx h */
-import {
-  App,
-  Fragment,
-  h,
-  Layout,
-  Rect,
-  render,
-  Text,
-  Vec2,
-  Vec4,
-} from "wgui";
+import { App, Fragment, h, Layout, Rect, render, Text, Vec2, Vec4 } from "wgui";
 import { useState } from "wgui/hooks";
 import {
   getLibraryTracks as getAppleMusicSavedTracks,

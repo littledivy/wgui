@@ -5,13 +5,13 @@ let currentHook = 0;
 export const setCurrentHook = (hook: number) => currentHook = hook;
 
 /**
- * useState hook for managing state in functional components 
- * 
+ * useState hook for managing state in functional components
+ *
  * @example
- * 
+ *
  * ```tsx
  * const [count, setCount] = useState(0);
- * 
+ *
  * return (
  *  <div>
  *   <p>{count}</p>
@@ -19,39 +19,36 @@ export const setCurrentHook = (hook: number) => currentHook = hook;
  * </div>
  * )
  * ```
- * 
  */
 export function useState<T>(initialValue: T): [T, (T: T) => void] {
-    const hook = hooks[currentHook] ?? initialValue;
-    const i = currentHook;
-    const setState = (value: any) => {
-        hooks[i] = value;
-    };
-    currentHook++;
-    return [hook, setState];
+  const hook = hooks[currentHook] ?? initialValue;
+  const i = currentHook;
+  const setState = (value: any) => {
+    hooks[i] = value;
+  };
+  currentHook++;
+  return [hook, setState];
 }
 
 /**
  * useEffect hook for running side effects in functional components
- * 
+ *
  * @example
- * 
+ *
  * ```tsx
  * useEffect(() => {
  *  console.log('Component mounted');
  * }, []);
  * ```
- * 
  */
 export function useEffect(callback: () => void, deps: any[]) {
-    const hook = hooks[currentHook] ?? [];
-    const i = currentHook;
-    const [oldDeps] = hook;
-    const hasChanged = deps.some((dep, i) => dep !== oldDeps[i]);
-    if (hasChanged) {
-        callback();
-    }
-    hooks[i] = [deps];
-    currentHook++;
+  const hook = hooks[currentHook] ?? [];
+  const i = currentHook;
+  const [oldDeps] = hook;
+  const hasChanged = deps.some((dep, i) => dep !== oldDeps[i]);
+  if (hasChanged) {
+    callback();
+  }
+  hooks[i] = [deps];
+  currentHook++;
 }
-

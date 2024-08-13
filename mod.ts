@@ -17,7 +17,6 @@ export const RECTANGLE_BUFFER_SIZE = 16 * 1024;
 
 await loadFont();
 
-
 export function h(tag: any, props: any, ...children: any[]) {
   if (typeof tag === "string") {
     throw new Error(`Tag ${tag} is not supported`);
@@ -84,7 +83,6 @@ export function App(
     title,
   };
 }
-
 
 export function Fragment({ children = [] }: { children?: any[] }): any[] {
   return children;
