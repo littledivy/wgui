@@ -24,8 +24,6 @@
     "example:music": "deno run -A --env=wgui-examples/music-app/.env --unstable-ffi --unstable-webgpu wgui-examples/music-app/main.tsx",
     "example:music-compile": "deno compile -A --no-check --env --unstable-ffi --unstable-webgpu wgui-examples/music-app/main.tsx --standalone",
     "example:hello-world": "deno run -A --unstable-ffi --unstable-webgpu wgui-examples/hello-world/main.tsx",
-    "example:hello-world-compile": "deno compile -A --no-check --unstable-ffi --unstable-webgpu wgui-examples/hello-world/main.tsx --standalone",
-    "example:xkcd-viewer": "deno run -A --unstable-ffi --unstable-webgpu wgui-examples/xkcd-viewer/main.tsx",
-    "example:xkcd-viewer-compile": "deno run -A --unstable-ffi --unstable-webgpu wgui-examples/xkcd-viewer/main.tsx --standalone"
+    "example:hello-world-compile": "deno compile -A --no-check --unstable-ffi --unstable-webgpu wgui-examples/hello-world/main.tsx --standalone"
   }
 }
