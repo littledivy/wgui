@@ -1,3 +1,8 @@
+/**
+ * @module wgui/text
+ * 
+ * This module provides text rendering utilities.
+ */
 import { instantiate } from "./wgui-ttf/wgui_ttf.generated.js";
 
 // deno-lint-ignore no-explicit-any

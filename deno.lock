@@ -2,6 +2,7 @@
   "version": "3",
   "packages": {
     "specifiers": {
+      "jsr:@denosaurs/plug@1": "jsr:@denosaurs/plug@1.0.5",
       "jsr:@denosaurs/plug@1.0.5": "jsr:@denosaurs/plug@1.0.5",
       "jsr:@divy/sdl2@0.10.1": "jsr:@divy/sdl2@0.10.1",
       "jsr:@gfx/canvas@0.5.6": "jsr:@gfx/canvas@0.5.6",
@@ -38,6 +39,7 @@
       "@gfx/canvas@0.5.6": {
         "integrity": "4f34b91daca182fb422e308692a5fa54c2f638d2e46c587a3974c1f9233407d1",
         "dependencies": [
+          "jsr:@denosaurs/plug@1",
           "jsr:@denosaurs/plug@1.0.5",
           "jsr:@std/encoding@0.217.0",
           "jsr:@std/fs@0.217.0",

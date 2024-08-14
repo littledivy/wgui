@@ -1,5 +1,10 @@
 // deno-lint-ignore-file no-explicit-any
-
+/**
+ * @module wgui
+ * @preferred
+ *
+ * WGUI is a WebGPU GUI library for Deno.
+ */
 import { EventType, startTextInput, stopTextInput } from "sdl2";
 import { InnerApp } from "./app.ts";
 import { Vec2, Vec4 } from "./data.ts";
@@ -122,9 +127,9 @@ export function App(
     title?: string;
   },
 ): {
-  styles: any;
-  children: any[] | undefined;
-  textures: any[];
+  styles?: any;
+  children?: any[];
+  textures?: any[];
   title: string;
 } {
   return {
