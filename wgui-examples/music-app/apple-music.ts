@@ -1,10 +1,10 @@
+// deno-lint-ignore-file no-explicit-any
 import { run } from "jxa";
-import type { iTunes } from "jxa/types/core.d.ts";
 import jimp from "npm:jimp";
 
 export function getState() {
   return run(() => {
-    const music = Application("Music") as unknown as iTunes;
+    const music = Application("Music") as unknown as any;
 
     return {
       state: music.playerState(),
