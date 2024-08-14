@@ -4,7 +4,7 @@ let currentHook = 0;
 
 /**
  * Set the current hook index
- * 
+ *
  * @example
  * ```tsx
  * setCurrentHook(0);
