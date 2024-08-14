@@ -123,6 +123,7 @@ export function run<R, A1, A2, A3, A4, A5, A6, A7, A8, A9>(
   a9: A9,
 ): Promise<R>;
 
+// deno-lint-ignore no-explicit-any
 export function run(jxaFunction: (...args: any[]) => any, ...args: any[]) {
   const code = `
     ObjC.import('stdlib');

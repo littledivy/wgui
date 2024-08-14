@@ -1,5 +1,5 @@
 [package]
-name = "wgui_ttf"
+name = "wgui-ttf"
 version = "0.0.0"
 edition = "2021"
 
@@ -7,8 +7,8 @@ edition = "2021"
 crate_type = ["cdylib"]
 
 [dependencies]
-wasm-bindgen = "=0.2.90"
+wasm-bindgen = "=0.2.92"
 ttf-parser = "0.20.0"
 console_error_panic_hook = "0.1.2"
-js-sys = "0.3"
+js-sys = "0.3.69"
 potpack = "0.1.2"

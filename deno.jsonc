@@ -4,7 +4,13 @@
   "exports": {
     ".": "./mod.ts",
     "./hooks": "./hooks.ts",
+    "./text": "./text.ts",
     "./wgui-ttf": "./wgui-ttf/wgui_ttf.generated.js"
+  },
+  "publish": {
+    "exclude": [
+      "wgui-examples"
+    ]
   },
   "imports": {
     "sdl2": "jsr:@divy/sdl2@0.10.1",
@@ -14,10 +20,12 @@
     "wgui/hooks": "./hooks.ts"
   },
   "tasks": {
-    "wasmbuild": "deno run -A https://deno.land/x/wasmbuild/main.ts --out wgui-ttf/",
+    "wasmbuild": "deno run -A jsr:@deno/wasmbuild@0.17.2 --out wgui-ttf/ --project wgui-ttf",
     "example:music": "deno run -A --env=wgui-examples/music-app/.env --unstable-ffi --unstable-webgpu wgui-examples/music-app/main.tsx",
     "example:music-compile": "deno compile -A --no-check --env --unstable-ffi --unstable-webgpu wgui-examples/music-app/main.tsx --standalone",
     "example:hello-world": "deno run -A --unstable-ffi --unstable-webgpu wgui-examples/hello-world/main.tsx",
-    "example:hello-world-compile": "deno compile -A --no-check --unstable-ffi --unstable-webgpu wgui-examples/hello-world/main.tsx --standalone"
+    "example:hello-world-compile": "deno compile -A --no-check --unstable-ffi --unstable-webgpu wgui-examples/hello-world/main.tsx --standalone",
+    "example:xkcd-viewer": "deno run -A --unstable-ffi --unstable-webgpu wgui-examples/xkcd-viewer/main.tsx",
+    "example:xkcd-viewer-compile": "deno run -A --unstable-ffi --unstable-webgpu wgui-examples/xkcd-viewer/main.tsx --standalone"
   }
 }

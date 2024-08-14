@@ -2,7 +2,15 @@
 const hooks: any = [];
 let currentHook = 0;
 
-export const setCurrentHook = (hook: number) => currentHook = hook;
+/**
+ * Set the current hook index
+ * 
+ * @example
+ * ```tsx
+ * setCurrentHook(0);
+ * ```
+ */
+export const setCurrentHook = (hook: number): number => currentHook = hook;
 
 /**
  * useState hook for managing state in functional components
