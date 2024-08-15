@@ -1,23 +1,56 @@
 // deno-lint-ignore-file no-explicit-any
-
+/**
+ * @module wgui
+ * @preferred
+ *
+ * WGUI is a WebGPU GUI library for Deno.
+ */
 import { EventType, startTextInput, stopTextInput } from "sdl2";
 import { InnerApp } from "./app.ts";
 import { Vec2, Vec4 } from "./data.ts";
 import { loadFont } from "./text.ts";
 import { setCurrentHook, useState } from "wgui/hooks";
 
+/**
+ * Node types for the renderer.
+ */
 export enum NodeType {
+  /**
+   * A glyph node.
+   */
   Glyph = -2,
+
+  /**
+   * A rectangle node.
+   */
   Rect = -1,
+
+  /**
+   * A rectangle node with a texture.
+   */
   TexturedRect = 0,
 }
+
+/**
+ * The number of samples for multisampling.
+ */
 export const SAMPLE_COUNT = 4;
 
+/**
+ * The size of the rectangle buffer.
+ */
 export const RECTANGLE_BUFFER_SIZE = 16 * 1024;
 
 await loadFont();
 
-export function h(tag: any, props: any, ...children: any[]) {
+/**
+ * Create a new element.
+ * @example
+ * ```tsx
+ * h("div", { id: "app" }, "Hello, World!");
+ * ```
+ */
+export function h(tag: any, props: any, ...children: any[]): any {
   if (typeof tag === "string") {
     throw new Error(`Tag ${tag} is not supported`);
   }
@@ -33,6 +66,13 @@ export function h(tag: any, props: any, ...children: any[]) {
   return tag();
 }
 
+/**
+ * Render the component.
+ * @example
+ * ```tsx
+ * render(App);
+ * ```
+ */
 export async function render(
   component: any,
 ) {
@@ -63,6 +103,17 @@ export async function render(
   });
 }
 
+/**
+ * The root element of the application.
+ * @example
+ * ```tsx
+ * <App title="Hello World" styles={{ width: 800, height: 600 }}>
+ *   <Rect styles={{ width: 600, height: 400 }} color={new Vec4(0.5, 0.5, 0.5, 1)} position={new Vec2(100, 100)}>
+ *     <Text fontSize={20} position={new Vec2(10, 10)} color={new Vec4(1, 1, 1, 1)}>Hello, World!</Text>
+ *   </Rect>
+ * </App>
+ * ```
+ */
 export function App(
   {
     styles,
@@ -75,7 +126,12 @@ export function App(
     textures?: any[];
     title?: string;
   },
-) {
+): {
+  styles?: any;
+  children?: any[];
+  textures?: any[];
+  title: string;
+} {
   return {
     styles,
     children,
@@ -84,15 +140,33 @@ export function App(
   };
 }
 
+/**
+ * A fragment element.
+ * @example
+ * ```tsx
+ * <Fragment>
+ *  <Text>Hello, World!</Text>
+ * </Fragment>
+ * ```
+ */
 export function Fragment({ children = [] }: { children?: any[] }): any[] {
   return children;
 }
 
+/**
+ * A text element.
+ * @example
+ * ```tsx
+ * <Text position={new Vec2(10, 10)} fontSize={16} color={new Vec4(1, 1, 1, 1)}>
+ *  Hello, World!
+ * </Text>
+ * ```
+ */
 export function Text(
   props: Partial<
     { position: Vec2; fontSize: number; color: Vec4; children: any[] }
   > = {},
-) {
+): (app: any, event: any) => void {
   return (app: any, event: any) => {
     if (event.type == EventType.Draw) {
       const text = props.children?.join("") ?? "";
@@ -107,13 +181,38 @@ export function Text(
   };
 }
 
-export function Rect(props: any = {}) {
+/**
+ * A rectangle element.
+ * @example
+ * ```tsx
+ * <Rect styles={{ width: 100, height: 100 }} color={new Vec4(1, 1, 1, 1)} position={new Vec2(0, 0)} />
+ * ```
+ */
+export function Rect(
+  props: Partial<
+    {
+      color: Vec4;
+      position: Vec2;
+      styles: { width: number; height: number };
+      borderRadius: number;
+      size: Vec2;
+      onMouseOver: (props: any) => void;
+      onMouseOut: (props: any) => void;
+      onClick: (props: any) => void;
+      onInput: (props: any, event: any) => void;
+      onMouseScroll: (props: any, event: any) => void;
+      onKeyDown: (props: any, event: any) => void;
+      usage: number;
+      image: Uint8Array;
+    }
+  > = {},
+): (app: any, event: any) => void {
   props.color ??= new Vec4(1, 1, 1, 1);
   props.position ??= new Vec2(0, 0);
-  props.styles.width ??= 100;
-  props.styles.height ??= 100;
+  props.styles!.width ??= 100;
+  props.styles!.height ??= 100;
   props.borderRadius ??= 0;
-  props.size ??= new Vec2(props.styles.width, props.styles.height);
+  props.size ??= new Vec2(props.styles!.width, props.styles!.height);
   const nop = () => {};
   props.onMouseOver ??= nop;
   props.onMouseOut ??= nop;
@@ -129,7 +228,7 @@ export function Rect(props: any = {}) {
     const ui = app.renderer;
 
     if (mouseOver && event.type == EventType.MouseWheel) {
-      props.onMouseScroll(props, event);
+      props.onMouseScroll!(props, event);
     }
     if (
       event.type == EventType.MouseMotion ||
@@ -138,18 +237,18 @@ export function Rect(props: any = {}) {
       // In bounds check.
       // Does not take into account border radius.
       if (
-        event.x >= props.position.x &&
-        event.x <= props.position.x + props.size.x &&
-        event.y >= props.position.y &&
-        event.y <= props.position.y + props.size.y
+        event.x >= props.position!.x &&
+        event.x <= props.position!.x + props.size!.x &&
+        event.y >= props.position!.y &&
+        event.y <= props.position!.y + props.size!.y
       ) {
         if (!mouseOver) {
-          props.onMouseOver(props);
+          props.onMouseOver!(props);
         }
 
         setMouseOver(true);
         if (event.type == EventType.MouseButtonDown) {
-          props.onClick(props);
+          props.onClick!(props);
           setFocused(true);
           startTextInput();
         }
@@ -157,7 +256,7 @@ export function Rect(props: any = {}) {
         setMouseOver(false);
         setFocused(false);
         stopTextInput();
-        props.onMouseOut(props);
+        props.onMouseOut!(props);
       }
     }
 
@@ -165,9 +264,9 @@ export function Rect(props: any = {}) {
       focused &&
       event.type == EventType.TextInput
     ) {
-      props.onInput(props, event);
+      props.onInput!(props, event);
     } else if (focused && event.type == EventType.KeyDown) {
-      props.onKeyDown(props, event);
+      props.onKeyDown!(props, event);
     }
 
     if (event.type == EventType.Draw) {
@@ -186,4 +285,3 @@ export function Rect(props: any = {}) {
 export * from "./data.ts";
 export * from "./app.ts";
 export * from "./renderer.ts";
-export * from "./text.ts";

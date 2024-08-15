@@ -1,4 +1,4 @@
-// deno-lint-ignore-file no-explicit-any
+// deno-lint-ignore-file no-explicit-any verbatim-module-syntax
 /** @jsx h */
 import { App, Fragment, h, Layout, Rect, render, Text, Vec2, Vec4 } from "wgui";
 import { useState } from "wgui/hooks";
@@ -53,7 +53,7 @@ function main() {
           height: 600,
         }}
         position={layout.center.subtract(new Vec2(250, 300))}
-        onMouseScroll={(self: any, event: any) => {
+        onMouseScroll={(_self: any, event: any) => {
           topTrackIndex -= event.y;
           topTrackIndex = Math.max(0, topTrackIndex);
           topTrackIndex = Math.min(
@@ -80,12 +80,12 @@ function main() {
           self.color = HIGHLIGHT_COLOR;
         }}
         onMouseOut={(self: any) => self.color = INPUT_COLOR}
-        onKeyDown={(self: any, event: any) => {
+        onKeyDown={(_self: any, event: any) => {
           if (event.keysym.scancode == 42) {
             setSearch(search.slice(0, -1));
           }
         }}
-        onInput={(self: any, event: any) => {
+        onInput={(_self: any, event: any) => {
           setSearch(search + event.text);
         }}
       />

@@ -1,3 +1,8 @@
+/**
+ * @module wgui/text
+ * 
+ * This module provides text rendering utilities.
+ */
 import { instantiate } from "./wgui-ttf/wgui_ttf.generated.js";
 
 // deno-lint-ignore no-explicit-any
@@ -77,6 +82,14 @@ function edt(
   }
 }
 
+/**
+ * Convert an image to a signed distance field.
+ * @example
+ * ```ts
+ * const imageData = new ImageData(100, 100);
+ * const sdf = toSDF(imageData, 100, 100, 8);
+ * ```
+ */
 // http://cs.brown.edu/people/pfelzens/papers/dt-final.pdf
 export function toSDF(
   imageData: ImageData,
@@ -129,25 +142,30 @@ export function toSDF(
   return new ImageData(data, width, height);
 }
 
-export async function loadFont(): Promise<void> {
+/**
+ * Load a font from a TTF file.
+ * @example
+ * ```ts
+ * await loadFont("HolySansMono", "./"); // loads the font from ./HolySansMono.ttf
+ * ```
+ */
+export async function loadFont(
+  fileName = "Inter",
+  outputDir = "./",
+): Promise<void> {
   const { parse_ttf } = await instantiate();
-  const fontAtlas = "./Inter.bin";
+  const fontAtlas = `${outputDir}${fileName}.bin`;
   if (!fileExistsDontCareAboutTOCTOUDontComeAfterMePls(fontAtlas)) {
-    const { createCanvas } = await import(
-      "https://deno.land/x/canvas@v1.4.1/mod.ts"
+    const { createCanvas, Fonts } = await import(
+      "jsr:@gfx/canvas@0.5.6"
     );
 
     const canvas = createCanvas(4096, 4096);
     const context = canvas.getContext("2d");
 
-    const buffer = Deno.readFileSync("./Inter.ttf");
+    const buffer = Deno.readFileSync(`${outputDir}${fileName}.ttf`);
     const fontName = "FontForAtlas";
-    canvas.loadFont(buffer, {
-      family: fontName,
-      style: "normal",
-      weight: "normal",
-      variant: "normal",
-    });
+    Fonts.register(buffer, fontName);
 
     context.font = `96px ${fontName}`;
     const renderAtlasCallback = (
@@ -180,7 +198,8 @@ export async function loadFont(): Promise<void> {
       atlasHeight,
       8,
     );
-    context.putImageData(sdf, 0, 0);
+    // deno-lint-ignore no-explicit-any
+    context.putImageData(sdf as any, 0, 0);
     const sdfImageData = context.getImageData(
       0,
       0,
@@ -189,14 +208,21 @@ export async function loadFont(): Promise<void> {
     );
 
     Deno.writeFileSync(fontAtlas, new Uint8Array(sdfImageData.data.buffer));
-    Deno.writeFileSync("./Inter.png", new Uint8Array(canvas.toBuffer()));
+    canvas.save(`${outputDir}${fileName}.png`, "png");
   }
 
-  Deno.readFile("./Inter.ttf").then((buffer) => {
+  Deno.readFile(`${outputDir}${fileName}.ttf`).then((buffer) => {
     ttf2 = parse_ttf(buffer, {});
   });
 }
 
+/**
+ * Get the shape of a text.
+ * @example
+ * ```ts
+ * const { positions, sizes, uvs } = getTextShape("Hello, World!", 24);
+ * ```
+ */
 export function getTextShape(
   text: string,
   size: number,

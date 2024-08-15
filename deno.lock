@@ -2,18 +2,93 @@
   "version": "3",
   "packages": {
     "specifiers": {
+      "jsr:@denosaurs/plug@1": "jsr:@denosaurs/plug@1.0.5",
+      "jsr:@denosaurs/plug@1.0.5": "jsr:@denosaurs/plug@1.0.5",
       "jsr:@divy/sdl2@0.10.1": "jsr:@divy/sdl2@0.10.1",
+      "jsr:@gfx/canvas@0.5.6": "jsr:@gfx/canvas@0.5.6",
       "jsr:@loading/taffy@0.1.2": "jsr:@loading/taffy@0.1.2",
+      "jsr:@std/assert@^0.214.0": "jsr:@std/assert@0.214.0",
+      "jsr:@std/assert@^0.217.0": "jsr:@std/assert@0.217.0",
+      "jsr:@std/encoding@0.214": "jsr:@std/encoding@0.214.0",
+      "jsr:@std/encoding@0.217.0": "jsr:@std/encoding@0.217.0",
+      "jsr:@std/fmt@0.214": "jsr:@std/fmt@0.214.0",
+      "jsr:@std/fs@0.214": "jsr:@std/fs@0.214.0",
+      "jsr:@std/fs@0.217.0": "jsr:@std/fs@0.217.0",
+      "jsr:@std/path@0.214": "jsr:@std/path@0.214.0",
+      "jsr:@std/path@0.217.0": "jsr:@std/path@0.217.0",
+      "jsr:@std/path@^0.214.0": "jsr:@std/path@0.214.0",
+      "jsr:@std/path@^0.217.0": "jsr:@std/path@0.217.0",
+      "npm:@types/node": "npm:@types/node@18.16.19",
       "npm:jimp": "npm:jimp@0.22.10_@jimp+custom@0.22.10",
       "npm:open": "npm:open@10.1.0",
       "npm:spotify-api.js": "npm:spotify-api.js@9.2.5"
     },
     "jsr": {
+      "@denosaurs/plug@1.0.5": {
+        "integrity": "04cd988da558adc226202d88c3a434d5fcc08146eaf4baf0cea0c2284b16d2bf",
+        "dependencies": [
+          "jsr:@std/encoding@0.214",
+          "jsr:@std/fmt@0.214",
+          "jsr:@std/fs@0.214",
+          "jsr:@std/path@0.214"
+        ]
+      },
       "@divy/sdl2@0.10.1": {
         "integrity": "9129166ea9b3bd0c2bdb7619221635c0cec9b6489891933a61022219964ada7d"
       },
+      "@gfx/canvas@0.5.6": {
+        "integrity": "4f34b91daca182fb422e308692a5fa54c2f638d2e46c587a3974c1f9233407d1",
+        "dependencies": [
+          "jsr:@denosaurs/plug@1",
+          "jsr:@denosaurs/plug@1.0.5",
+          "jsr:@std/encoding@0.217.0",
+          "jsr:@std/fs@0.217.0",
+          "jsr:@std/path@0.217.0"
+        ]
+      },
       "@loading/taffy@0.1.2": {
         "integrity": "e3102b2b8931730691bc434701d0bca92f38177342c3e9e21f09468b3eff1c11"
+      },
+      "@std/assert@0.214.0": {
+        "integrity": "55d398de76a9828fd3b1aa653f4dba3eee4c6985d90c514865d2be9bd082b140"
+      },
+      "@std/assert@0.217.0": {
+        "integrity": "c98e279362ca6982d5285c3b89517b757c1e3477ee9f14eb2fdf80a45aaa9642"
+      },
+      "@std/encoding@0.214.0": {
+        "integrity": "30a8713e1db22986c7e780555ffd2fefd1d4f9374d734bb41f5970f6c3352af5"
+      },
+      "@std/encoding@0.217.0": {
+        "integrity": "b03e8ff94c98d6b6a02c02c5cf8e5d203400155516248964fc4559abc04669dc"
+      },
+      "@std/fmt@0.214.0": {
+        "integrity": "40382cff88a0783b347b4d69b94cf931ab8e549a733916718cb866c08efac4d4"
+      },
+      "@std/fs@0.214.0": {
+        "integrity": "bc880fea0be120cb1550b1ed7faf92fe071003d83f2456a1e129b39193d85bea",
+        "dependencies": [
+          "jsr:@std/assert@^0.214.0",
+          "jsr:@std/path@^0.214.0"
+        ]
+      },
+      "@std/fs@0.217.0": {
+        "integrity": "0bfff5f3618d68c385b28b4ffbf3a15c98293a0f1186444458b62e0111ce77b2",
+        "dependencies": [
+          "jsr:@std/assert@^0.217.0",
+          "jsr:@std/path@^0.217.0"
+        ]
+      },
+      "@std/path@0.214.0": {
+        "integrity": "d5577c0b8d66f7e8e3586d864ebdf178bb326145a3611da5a51c961740300285",
+        "dependencies": [
+          "jsr:@std/assert@^0.214.0"
+        ]
+      },
+      "@std/path@0.217.0": {
+        "integrity": "1217cc25534bca9a2f672d7fe7c6f356e4027df400c0e85c0ef3e4343bc67d11",
+        "dependencies": [
+          "jsr:@std/assert@^0.217.0"
+        ]
       }
     },
     "npm": {
@@ -293,6 +368,10 @@
       },
       "@types/node@16.9.1": {
         "integrity": "sha512-QpLcX9ZSsq3YYUUnD3nFDY8H7wctAhQj/TFKL8Ya8v5fMm3CFXxo8zStsLAl780ltoYoo1WvKUVGBQK+1ifr7g==",
+        "dependencies": {}
+      },
+      "@types/node@18.16.19": {
+        "integrity": "sha512-IXl7o+R9iti9eBW4Wg2hx1xQDig183jj7YLn8F7udNceyfkbn1ZxmzZXuak20gR40D7pIkIY1kYGx5VIGbaHKA==",
         "dependencies": {}
       },
       "any-base@1.1.0": {

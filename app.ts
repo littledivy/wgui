@@ -79,7 +79,7 @@ export class InnerApp {
     return app;
   }
 
-  addTask(promise: any) {
+  addTask(promise: any): any {
     this.#tasks++;
     return promise.then((p: any) => {
       this.#tasks--;

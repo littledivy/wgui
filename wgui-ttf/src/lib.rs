@@ -5,43 +5,57 @@ use wasm_bindgen::prelude::*;
 mod pack;
 
 #[wasm_bindgen]
-struct Glyphs {
+pub struct Glyphs {
+  #[allow(dead_code)]
   face: Face<'static>,
+  #[allow(dead_code)]
   pack_width: f32,
+  #[allow(dead_code)]
   pack_height: f32,
+  #[allow(dead_code)]
   quads: HashMap<u32, Quad>,
+  #[allow(dead_code)]
   uvs: HashMap<u32, [f32; 4]>,
 }
 
 #[derive(Debug)]
-struct Quad {
+pub struct Quad {
   code: u32,
+  #[allow(dead_code)]
   lsb: f32,
+  #[allow(dead_code)]
   rsb: f32,
+  #[allow(dead_code)]
   width: f32,
+  #[allow(dead_code)]
   height: f32,
   y: f32,
   x: f32,
 }
 
 #[wasm_bindgen]
-struct TextShape {
+pub struct TextShape {
+  #[allow(dead_code)]
   pub width: f32,
+  #[allow(dead_code)]
   pub height: f32,
 }
 
 #[wasm_bindgen]
 impl Glyphs {
+  #[allow(dead_code)]
   #[wasm_bindgen]
   pub fn get_atlas_width(&self) -> f32 {
     self.pack_width
   }
 
+  #[allow(dead_code)]
   #[wasm_bindgen]
   pub fn get_atlas_height(&self) -> f32 {
     self.pack_height
   }
 
+  #[allow(dead_code)]
   #[wasm_bindgen]
   pub fn get_text_shape(
     &self,
@@ -108,14 +122,16 @@ impl Drop for Glyphs {
 
 const ATLAS_FONT_SIZE: usize = 96;
 const ATLAS_GAP: i16 = 6; // Half of the radius.
+#[allow(dead_code)]
 const ATLAS_RADIUS: usize = 12; // Roughly 1/6 of font size.
 
+#[allow(dead_code)]
 #[wasm_bindgen]
 pub fn parse_ttf(buffer: Vec<u8>, f: &js_sys::Object) -> Glyphs {
   std::panic::set_hook(Box::new(console_error_panic_hook::hook));
 
   let buffer: &'static [u8] = Box::leak(buffer.into_boxed_slice());
-  let face = Face::from_slice(buffer, 0).unwrap();
+  let face = Face::parse(buffer, 0).unwrap();
 
   let cmap = face.tables().cmap.unwrap();
   let hmtx = face.tables().hmtx.unwrap();
@@ -131,12 +147,12 @@ pub fn parse_ttf(buffer: Vec<u8>, f: &js_sys::Object) -> Glyphs {
 
     subtable.codepoints(|code| {
       let Some(index) = subtable.glyph_index(code as u32) else {
-          panic!("missing glyph for {}", code);
+        panic!("missing glyph for {}", code);
       };
 
       let bbox = face.glyph_bounding_box(index).unwrap_or_else(|| {
         println!("missing bbox for {}", code);
-        face.glyph_bounding_box( ttf_parser::GlyphId(0) ).unwrap()
+        face.glyph_bounding_box(ttf_parser::GlyphId(0)).unwrap()
       });
       let lsb = hmtx.side_bearing(index).unwrap();
       let advance = hmtx.advance(index).unwrap();
@@ -152,20 +168,17 @@ pub fn parse_ttf(buffer: Vec<u8>, f: &js_sys::Object) -> Glyphs {
       ];
       if code == b'H' as u32 {
         println!("H: {:?}", size);
-
       }
 
-      quads.push(
-        Quad {
-          code: code as u32,
-          lsb: lsb as f32,
-          rsb: advance as f32 - lsb as f32 - (width as f32),
-          width: width as f32,
-          height: height as f32,
-          y: bbox.y_min as f32,
-          x: bbox.x_min as f32,
-        },
-      );
+      quads.push(Quad {
+        code: code as u32,
+        lsb: lsb as f32,
+        rsb: advance as f32 - lsb as f32 - (width as f32),
+        width: width as f32,
+        height: height as f32,
+        y: bbox.y_min as f32,
+        x: bbox.x_min as f32,
+      });
 
       sizes.push(size);
     });
@@ -177,34 +190,41 @@ pub fn parse_ttf(buffer: Vec<u8>, f: &js_sys::Object) -> Glyphs {
   let mut i = 0;
   let mut quad_map = HashMap::new();
   for (rect, glyph) in pack.positions.into_iter().zip(quads) {
-      let size = &sizes[i];
-      let code = glyph.code;
-      i += 1;
-      uvs.insert(
-        code,
-        [
-          rect.x as f32 / pack.width as f32,
-          rect.y as f32 / pack.height as f32,
-          size[0] as f32 / pack.width as f32,
-          size[1] as f32 / pack.height as f32,
-        ],
+    let size = &sizes[i];
+    let code = glyph.code;
+    i += 1;
+    uvs.insert(
+      code,
+      [
+        rect.x as f32 / pack.width as f32,
+        rect.y as f32 / pack.height as f32,
+        size[0] as f32 / pack.width as f32,
+        size[1] as f32 / pack.height as f32,
+      ],
+    );
+
+    if let Some(f) = f.dyn_ref::<js_sys::Function>() {
+      let this = JsValue::NULL;
+      let code = JsValue::from(code);
+      let x = JsValue::from(
+        rect.x as f32 - glyph.x as f32 * scale + ATLAS_GAP as f32,
       );
+      let y = JsValue::from(
+        rect.y as f32 + size[1] as f32 + glyph.y as f32 * scale
+          - ATLAS_GAP as f32,
+      );
+      let _ = f.call3(&this, &code, &x, &y);
+    }
 
-      if let Some(f) = f.dyn_ref::<js_sys::Function>() {
-        let this = JsValue::NULL;
-        let code = JsValue::from(code);
-        let x = JsValue::from(
-          (rect.x as f32 - glyph.x as f32 * scale + ATLAS_GAP as f32),
-        );
-        let y = JsValue::from(
-          (rect.y as f32 + size[1] as f32 + glyph.y as f32 * scale - ATLAS_GAP as f32),
-        );
-        let _ = f.call3(&this, &code, &x, &y);
-      }
-
-      quad_map.insert(code, glyph);
+    quad_map.insert(code, glyph);
   }
 
-  let glyphs = Glyphs { face, quads: quad_map, uvs, pack_width: pack.width, pack_height: pack.height };
+  let glyphs = Glyphs {
+    face,
+    quads: quad_map,
+    uvs,
+    pack_width: pack.width,
+    pack_height: pack.height,
+  };
   glyphs
 }

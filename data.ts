@@ -1,6 +1,17 @@
+/**
+ * Layout of the window.
+ */
 export class Layout {
-  width: number;
-  height: number;
+  /**
+   * layout width
+   */
+  readonly width: number;
+
+  /**
+   * layout height
+   */
+  readonly height: number;
+
   constructor(
     width: number,
     height: number,
@@ -9,22 +20,37 @@ export class Layout {
     this.height = height;
   }
 
+  /**
+   * Get the center of the layout.
+   */
   get center(): Vec2 {
     return new Vec2(this.width / 2, this.height / 2);
   }
 
+  /**
+   * Get the top left corner of the layout.
+   */
   get topLeft(): Vec2 {
     return new Vec2(0, 0);
   }
 
+  /**
+   * Get the top right corner of the layout.
+   */
   get topRight(): Vec2 {
     return new Vec2(this.width, 0);
   }
 
+  /**
+   * Get the bottom left corner of the layout.
+   */
   get bottomLeft(): Vec2 {
     return new Vec2(0, this.height);
   }
 
+  /**
+   * Get the bottom right corner of the layout.
+   */
   get bottomRight(): Vec2 {
     return new Vec2(this.width, this.height);
   }
@@ -36,51 +62,88 @@ const EPSILON = 0.001;
  * A 2D vector.
  */
 export class Vec2 {
-  x: number;
-  y: number;
+  /**
+   * x coordinate
+   */
+  readonly x: number;
+
+  /**
+   * y coordinate
+   */
+  readonly y: number;
 
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
   }
 
+  /**
+   * Add two vectors.
+   */
   add(other: Vec2): Vec2 {
     return new Vec2(this.x + other.x, this.y + other.y);
   }
 
+  /**
+   * Subtract two vectors.
+   */
   subtract(other: Vec2): Vec2 {
     return new Vec2(this.x - other.x, this.y - other.y);
   }
 
+  /**
+   * Get the length of the vector
+   */
   length(): number {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   }
 
+  /**
+   * Normalize the vector.
+   */
   normalize(): Vec2 {
     const length = this.length();
     return new Vec2(this.x / length, this.y / length);
   }
 
+  /**
+   * Scale the vector by a scalar.
+   */
   scale(scalar: number): Vec2 {
     return new Vec2(this.x * scalar, this.y * scalar);
   }
 
+  /**
+   * Get the cross product of two vectors.
+   */
   cross(other: Vec2): number {
     return this.x * other.y - this.y * other.x;
   }
 
+  /**
+   * Get the dot product of two vectors.
+   */
   dot(other: Vec2): number {
     return this.x * other.x + this.y * other.y;
   }
 
+  /**
+   * Get the distance between two vectors.
+   */
   distance(other: Vec2): number {
     return this.subtract(other).length();
   }
 
+  /**
+   * Linearly interpolate between two vectors.
+   */
   lerp(other: Vec2, t: number): Vec2 {
     return this.add(other.subtract(this).scale(t));
   }
 
+  /**
+   * Check if two vectors are equal within an epsilon.
+   */
   equalsEpsilon(other: Vec2, epsilon: number): boolean {
     return (
       Math.abs(this.x - other.x) < epsilon &&
@@ -88,6 +151,9 @@ export class Vec2 {
     );
   }
 
+  /**
+   * Check if two vectors are equal.
+   */
   equals(other: Vec2): boolean {
     return this.equalsEpsilon(other, EPSILON);
   }
@@ -97,10 +163,25 @@ export class Vec2 {
  * A 4-dimensional vector.
  */
 export class Vec4 {
-  x: number;
-  y: number;
-  z: number;
-  w: number;
+  /**
+   * x coordinate
+   */
+  readonly x: number;
+
+  /**
+   * y coordinate
+   */
+  readonly y: number;
+
+  /**
+   * z coordinate
+   */
+  readonly z: number;
+
+  /**
+   * w coordinate
+   */
+  readonly w: number;
 
   constructor(
     x: number,
@@ -114,6 +195,9 @@ export class Vec4 {
     this.w = w;
   }
 
+  /**
+   * Add two vectors.
+   */
   add(other: Vec4): Vec4 {
     return new Vec4(
       this.x + other.x,
