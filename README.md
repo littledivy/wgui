@@ -4,8 +4,8 @@ Tiny UI framework for Deno using the full power of WebGPU.
 
 ```tsx
 /* @jsx h */
-import { App, h, Rect, render, Text, Vec4 } from "wgui";
-import { useState } from "wgui/hooks";
+import { App, h, Rect, render, Text, Vec4 } from "jsr:@divy/wgui";
+import { useState } from "jsr:@divy/wgui/hooks";
 
 function main() {
   const [counter, setCounter] = useState<number>(0);
