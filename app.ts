@@ -42,10 +42,12 @@ export class InnerApp {
       style.height,
     ).build();
 
-    const surface = window.windowSurface();
+    const surface = window.windowSurface(style.width, style.height);
     const context = surface.getContext("webgpu");
     context.configure({
+      // @ts-ignore - Deno types are missing this
       width: style.width,
+      // @ts-ignore - Deno types are missing this
       height: style.height,
       device,
       format: "bgra8unorm",

@@ -31,7 +31,6 @@ class RectRenderer {
     this.width = width;
     this.height = height;
 
-    // make sure to match with wgui.wgsl
     const rectangleModule = this.#device.createShaderModule({
       code: `
 struct VertexInput {

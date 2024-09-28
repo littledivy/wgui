@@ -1,6 +1,6 @@
 /**
  * @module wgui/hooks
- * 
+ *
  * This module provides hooks for managing state and side effects in functional components.
  */
 // deno-lint-ignore-file no-explicit-any

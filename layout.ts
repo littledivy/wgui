@@ -11,6 +11,10 @@ const { Node, TaffyTree } = await instantiate();
 
 /**
  * Document class for creating layout documents.
+ *
+ * @example
+ * ```ts
+ * const document = new Document({ width: 100, height: 100 });
  */
 export class Document {
   /**
@@ -27,9 +31,9 @@ export class Document {
   #mainNode: INode;
   #ids: Map<string, number> = new Map();
   #computedLayout!: ILayout;
-  #size: any;
+  #size: string | number;
   #childCount = 0;
-  constructor(style: any, size: any = 100) {
+  constructor(style: any = {}, size: string | number = 100) {
     this.#mainNode = new Node(this.#tree, style);
     this.#size = size;
   }
